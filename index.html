@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verbatim Login</title>
+
+<style>
+:root{
+    --bg:#f4f6fb;
+    --card:#ffffff;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --border:#dbe2ea;
+    --primary:#2563eb;
+    --primary-hover:#1d4ed8;
+    --shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+body.dark{
+    --bg:#0f172a;
+    --card:#1e293b;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --border:#334155;
+    --primary:#3b82f6;
+    --primary-hover:#60a5fa;
+    --shadow:0 15px 40px rgba(0,0,0,.45);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+}
+
+.toggle{
+    position:absolute;
+    top:20px;
+    right:20px;
+}
+
+.toggle button{
+    border:none;
+    background:var(--card);
+    color:var(--text);
+    border:1px solid var(--border);
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:18px;
+    box-shadow:var(--shadow);
+}
+
+.card{
+    width:360px;
+    background:var(--card);
+    padding:40px;
+    border-radius:18px;
+    box-shadow:var(--shadow);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:8px;
+    font-size:2rem;
+}
+
+.subtitle{
+    text-align:center;
+    color:var(--muted);
+    margin-bottom:30px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--text);
+    outline:none;
+    margin-bottom:20px;
+    font-size:15px;
+}
+
+input:focus{
+    border-color:var(--primary);
+}
+
+button.login{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:var(--primary);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button.login:hover{
+    background:var(--primary-hover);
+}
+
+.footer{
+    margin-top:22px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="toggle">
+    <button id="themeBtn">🌙</button>
+</div>
+
+<div class="card">
+    <h1>Verbatim</h1>
+    <div class="subtitle">Please sign in</div>
+
+    <form id="loginForm">
+        <label>Login Name</label>
+        <input
+            type="text"
+            placeholder="Enter login name"
+            required>
+
+        <label>Password</label>
+        <input
+            type="password"
+            placeholder="Enter password"
+            required>
+
+        <button class="login" type="submit">
+            Login
+        </button>
+    </form>
+
+    <div class="footer">
+        Demo Login Page
+    </div>
+</div>
+
+<script>
+const body = document.body;
+const btn = document.getElementById("themeBtn");
+
+// Restore theme
+if(localStorage.getItem("theme")==="dark"){
+    body.classList.add("dark");
+    btn.textContent="☀️";
+}
+
+btn.onclick=()=>{
+    body.classList.toggle("dark");
+    const dark=body.classList.contains("dark");
+    btn.textContent=dark?"☀️":"🌙";
+    localStorage.setItem("theme",dark?"dark":"light");
+};
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    // Dummy login
+    window.location.href="http://localhost:8000";
+});
+</script>
+
+</body>
+</html>
