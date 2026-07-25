@@ -1,0 +1,33 @@
+Write a Python module that speaks a line of text aloud using the ElevenLabs
+Text to Speech API.
+
+Interface:
+
+    speak(text: str, language_code: str, play: bool = True) -> Speech
+
+    Speech is a dataclass with:
+        audio_path: str            path to the written mp3
+        duration_s: float
+
+Implementation: use the official elevenlabs Python SDK, model
+"eleven_multilingual_v2". Read ELEVENLABS_API_KEY from the environment; raise
+a clear error at import time if absent.
+
+Voice ids come from the environment: ELEVENLABS_VOICE_PATIENT and
+ELEVENLABS_VOICE_DOCTOR, selected by which side is being spoken to. Accept the
+voice id as an optional argument that overrides this. Never hardcode a voice id.
+
+Write the mp3 to a temp file and return its path. When play is True, play it
+through the default output device.
+
+Text longer than 800 characters: do not truncate. Raise TtsError, and let the
+caller decide.
+
+Raise TtsError on API failure or timeout (15 second cap), with a message naming
+the stage as "speech".
+
+Use the current ElevenLabs Python SDK surface: instantiate
+ElevenLabs(api_key=...) from elevenlabs.client, and synthesize via
+client.text_to_speech.convert(voice_id=..., model_id=..., text=...), which
+returns an iterator of audio bytes to be joined and written to file. Do not use
+client.generate(), which no longer exists.
