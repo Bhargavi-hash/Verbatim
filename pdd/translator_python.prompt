@@ -1,0 +1,26 @@
+Write a Python module that translates a single patient-intake turn from
+Spanish to English while preserving a pointer back to the exact original
+wording, so every English field in the structured intake can later be traced
+to the Spanish phrase that produced it.
+
+Interface:
+
+    translate_turn(text: str, source_lang: str = "es", target_lang: str = "en") -> Translation
+
+    Translation is a dataclass with:
+        source_text: str
+        translated_text: str
+        source_lang: str
+        target_lang: str
+
+Implementation: call an LLM via llm_client.complete(prompt: str) -> str with a
+translation-only instruction — no summarization, no paraphrasing beyond what
+natural translation requires, and no added information not present in
+source_text.
+
+Raise TranslationError if source_text is empty/whitespace-only, or if the
+model returns an empty string.
+
+This module is a building block for pipeline.py, which stitches per-turn
+translations into the full structured intake with source_span citations (see
+data/fixtures/sample_structured_intake.json for the target shape).
