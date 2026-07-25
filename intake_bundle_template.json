@@ -1,0 +1,184 @@
+{
+  "resourceType": "Bundle",
+  "id": "firstword-intake-demo-001",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "in-progress",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "EMER",
+          "display": "emergency"
+        },
+        "subject": { "reference": "Patient/{{PATIENT_ID}}" },
+        "period": { "start": "{{TIMESTAMP}}" },
+        "reasonCode": [{
+          "coding": [{
+            "system": "http://snomed.info/sct",
+            "code": "29857009",
+            "display": "Chest pain"
+          }],
+          "text": "Chest pain (patient-reported at intake)"
+        }]
+      },
+      "request": { "method": "POST", "url": "Encounter" }
+    },
+    {
+      "fullUrl": "urn:uuid:obs-severity",
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "category": [{
+          "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+            "code": "survey",
+            "display": "Survey"
+          }]
+        }],
+        "code": {
+          "coding": [{
+            "system": "http://loinc.org",
+            "code": "72514-3",
+            "display": "Pain severity - 0-10 verbal numeric rating [Score] - Reported"
+          }]
+        },
+        "subject": { "reference": "Patient/{{PATIENT_ID}}" },
+        "encounter": { "reference": "urn:uuid:encounter-1" },
+        "effectiveDateTime": "{{TIMESTAMP}}",
+        "valueQuantity": {
+          "value": 8,
+          "unit": "score",
+          "system": "http://unitsofmeasure.org",
+          "code": "{score}"
+        },
+        "note": [{
+          "text": "Patient stated: 'Como un ocho' (about an eight). Source turn 6."
+        }]
+      },
+      "request": { "method": "POST", "url": "Observation" }
+    },
+    {
+      "fullUrl": "urn:uuid:obs-narrative",
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "category": [{
+          "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+            "code": "survey",
+            "display": "Survey"
+          }]
+        }],
+        "code": {
+          "coding": [{
+            "system": "http://loinc.org",
+            "code": "67781-5",
+            "display": "Summarization of encounter note Narrative"
+          }],
+          "text": "Verbatim patient-reported intake summary"
+        },
+        "subject": { "reference": "Patient/{{PATIENT_ID}}" },
+        "encounter": { "reference": "urn:uuid:encounter-1" },
+        "effectiveDateTime": "{{TIMESTAMP}}",
+        "valueString": "{{ENGLISH_SUMMARY}}"
+      },
+      "request": { "method": "POST", "url": "Observation" }
+    },
+    {
+      "fullUrl": "urn:uuid:allergy-1",
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "clinicalStatus": {
+          "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+            "code": "active"
+          }]
+        },
+        "verificationStatus": {
+          "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+            "code": "unconfirmed"
+          }]
+        },
+        "code": {
+          "coding": [{
+            "system": "http://snomed.info/sct",
+            "code": "373270004",
+            "display": "Penicillin"
+          }],
+          "text": "Penicillin"
+        },
+        "patient": { "reference": "Patient/{{PATIENT_ID}}" },
+        "reaction": [{
+          "manifestation": [{
+            "coding": [{
+              "system": "http://snomed.info/sct",
+              "code": "271807003",
+              "display": "Rash"
+            }],
+            "text": "rash"
+          }]
+        }]
+      },
+      "request": { "method": "POST", "url": "AllergyIntolerance" }
+    },
+    {
+      "fullUrl": "urn:uuid:provenance-1",
+      "resource": {
+        "resourceType": "Provenance",
+        "target": [
+          { "reference": "urn:uuid:encounter-1" },
+          { "reference": "urn:uuid:obs-severity" },
+          { "reference": "urn:uuid:obs-narrative" },
+          { "reference": "urn:uuid:allergy-1" }
+        ],
+        "recorded": "{{TIMESTAMP}}",
+        "activity": {
+          "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+            "code": "CREATE",
+            "display": "create"
+          }]
+        },
+        "agent": [
+          {
+            "type": {
+              "coding": [{
+                "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                "code": "author",
+                "display": "Author"
+              }]
+            },
+            "who": { "display": "Verbatim intake agent (ElevenLabs conversational AI)" }
+          },
+          {
+            "type": {
+              "coding": [{
+                "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                "code": "verifier",
+                "display": "Verifier"
+              }]
+            },
+            "who": { "display": "{{SIGNER_NAME}}" }
+          }
+        ],
+        "signature": [{
+          "type": [{
+            "system": "urn:iso-astm:E1762-95:2013",
+            "code": "1.2.840.10065.1.12.1.5",
+            "display": "Verification Signature"
+          }],
+          "when": "{{TIMESTAMP}}",
+          "who": { "display": "{{SIGNER_NAME}}" },
+          "targetFormat": "application/fhir+json",
+          "sigFormat": "application/jose",
+          "data": "{{SIGNATURE_DATA_BASE64}}"
+        }]
+      },
+      "request": { "method": "POST", "url": "Provenance" }
+    }
+  ]
+}

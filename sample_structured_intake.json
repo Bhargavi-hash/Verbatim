@@ -1,0 +1,77 @@
+{
+  "session_id": "demo-session-001",
+  "patient_ref": "Patient/synthetic-maria-gonzalez",
+  "language_spoken": "es",
+  "triage_priority": "EMERGENT",
+  "red_flags": [
+    "chest pain with radiation to left arm",
+    "shortness of breath",
+    "acute onset within 3 hours"
+  ],
+  "chief_complaint": {
+    "value": "Chest pain",
+    "source_span": "Me duele mucho el pecho desde esta manana.",
+    "source_turn": 2,
+    "stated_by_patient": true
+  },
+  "onset": {
+    "value": "This morning, on waking",
+    "source_span": "empezo cuando me levante",
+    "source_turn": 4,
+    "stated_by_patient": true
+  },
+  "duration": {
+    "value": "About 3 hours",
+    "source_span": "Como tres horas",
+    "source_turn": 4,
+    "stated_by_patient": true
+  },
+  "severity_0_10": {
+    "value": 8,
+    "source_span": "Como un ocho",
+    "source_turn": 6,
+    "stated_by_patient": true
+  },
+  "associated_symptoms": [
+    {
+      "value": "Shortness of breath",
+      "source_span": "me falta el aire",
+      "source_turn": 6,
+      "stated_by_patient": true
+    },
+    {
+      "value": "Left arm numbness",
+      "source_span": "siento el brazo izquierdo dormido",
+      "source_turn": 6,
+      "stated_by_patient": true
+    }
+  ],
+  "current_medications": [
+    {
+      "value": "Lisinopril",
+      "indication": "hypertension",
+      "source_span": "tomo lisinopril para la presion",
+      "source_turn": 8,
+      "stated_by_patient": true
+    }
+  ],
+  "allergies": [
+    {
+      "value": "Penicillin",
+      "reaction": "rash",
+      "source_span": "a la penicilina. Me sale sarpullido",
+      "source_turn": 10,
+      "stated_by_patient": true
+    }
+  ],
+  "relevant_history": [
+    {
+      "value": "Hypertension",
+      "source_span": "lisinopril para la presion",
+      "source_turn": 8,
+      "stated_by_patient": false,
+      "note": "INFERRED from medication indication - not directly stated"
+    }
+  ],
+  "english_summary": "50-year-old Spanish-speaking female presenting with 3 hours of chest pain rated 8/10, with shortness of breath and left arm numbness. Takes lisinopril. Penicillin allergy (rash). EMERGENT triage."
+}

@@ -1,0 +1,20 @@
+{
+  "session_id": "demo-session-001",
+  "patient_ref": "Patient/synthetic-maria-gonzalez",
+  "language_detected": "es",
+  "emergency": true,
+  "transcript": [
+    { "turn": 1, "speaker": "agent",   "ts": "2026-07-25T09:14:02Z", "text": "Hola, soy el asistente de admision. Voy a hacerle unas preguntas cortas. Para empezar, digame, por que vino hoy?" },
+    { "turn": 2, "speaker": "patient", "ts": "2026-07-25T09:14:11Z", "text": "Me duele mucho el pecho desde esta manana." },
+    { "turn": 3, "speaker": "agent",   "ts": "2026-07-25T09:14:16Z", "text": "Gracias por decirmelo. Como cuanto tiempo lleva con ese dolor?" },
+    { "turn": 4, "speaker": "patient", "ts": "2026-07-25T09:14:23Z", "text": "Como tres horas, empezo cuando me levante." },
+    { "turn": 5, "speaker": "agent",   "ts": "2026-07-25T09:14:28Z", "text": "En una escala del cero al diez, que tan fuerte es el dolor?" },
+    { "turn": 6, "speaker": "patient", "ts": "2026-07-25T09:14:34Z", "text": "Como un ocho. Tambien me falta el aire y siento el brazo izquierdo dormido." },
+    { "turn": 7, "speaker": "agent",   "ts": "2026-07-25T09:14:40Z", "text": "Entiendo. Toma algun medicamento actualmente?" },
+    { "turn": 8, "speaker": "patient", "ts": "2026-07-25T09:14:47Z", "text": "Si, tomo lisinopril para la presion." },
+    { "turn": 9, "speaker": "agent",   "ts": "2026-07-25T09:14:52Z", "text": "Es alergica a algun medicamento?" },
+    { "turn": 10, "speaker": "patient","ts": "2026-07-25T09:14:58Z", "text": "Si, a la penicilina. Me sale sarpullido." },
+    { "turn": 11, "speaker": "agent",  "ts": "2026-07-25T09:15:03Z", "text": "Gracias. Por lo que me dice, voy a avisar al equipo medico ahora mismo para que la atiendan de inmediato." }
+  ],
+  "summary": "Paciente de 50 anos con dolor de pecho de 3 horas de evolucion, intensidad 8/10, con falta de aire y adormecimiento del brazo izquierdo. Toma lisinopril. Alergica a penicilina."
+}
