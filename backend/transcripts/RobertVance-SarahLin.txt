@@ -1,0 +1,54 @@
+Clinical Transcript: Encounter #4092
+Date/Time: July 25, 2026 | 14:15 UTC
+
+Provider: Dr. Sarah Lin, MD (Internal Medicine)
+
+Patient: Robert Vance (Age 58)
+
+Known Chronic Conditions: Type 2 Diabetes Mellitus (HbA1c 7.2%), Primary Hypertension
+
+Dr. Lin: Good afternoon, Robert. Good to see you again. Before we dive into anything new, how have your morning blood glucose readings been running over the last couple of weeks?
+
+Patient: Hi, Dr. Lin. Pretty steady, mostly between 120 and 140 mg/dL before breakfast. The metformin seems to be doing its job.
+
+Dr. Lin: Glad to hear that. Now, you noted on your intake form that you've been experiencing some new symptoms over the past few weeks. Walk me through what's going on.
+
+Patient: Yeah, it's my right knee and lower leg. It started as a dull ache about three weeks ago, but lately, it's been getting tighter and swollen, especially towards the end of the work day.
+
+Dr. Lin: I see. Let's get some specific numbers on this so we can track it accurately. On a scale of 0 to 10—where 0 is no pain at all and 10 is the worst pain imaginable—how would you rate the pain right now while sitting?
+
+Patient: Right now, sitting here? It's about a 3 out of 10.
+
+Dr. Lin: And what about at its peak, say after standing or walking at work?
+
+Patient: Oh, it easily gets up to a 7 out of 10 by 5:00 PM. It turns into a sharp, throbbing feeling.
+
+Dr. Lin: Got it. 3 out of 10 at rest, rising to a 7 out of 10 with weight-bearing. How many hours a day are you on your feet at work currently?
+
+Patient: I'm a warehouse supervisor, so roughly 6 to 7 hours a day on concrete floors.
+
+Dr. Lin: That’s significant strain. Have you noticed any warmth or redness around the joint, or any swelling in the calf itself?
+
+Patient: It's definitely warm to the touch around the kneecap. As for swelling, my right ankle looks noticeably bigger than the left by evening.
+
+Dr. Lin: Let's measure that swelling qualitatively. If 0 is normal and 4 is severe swelling where pressing a finger leaves a deep indent for several seconds, where would you rate your right ankle swelling around 5:00 PM?
+
+Patient: I'd say a 2 or a 3. If I press on the sock line, the dent stays there for a good 15 to 20 seconds.
+
+Dr. Lin: Understood, sounds like +2 to +3 pitting edema in the lower right extremity. Have you had any fever, chills, or shortness of breath lately?
+
+Patient: No fever or chills. No shortness of breath either, thankfully.
+
+Dr. Lin: Good. Have you tried taking any over-the-counter medications or interventions for the pain, and if so, how much relief did they provide?
+
+Patient: I took 400 mg of Ibuprofen twice a day for about four days last week. It knocked the pain down from a 7 to about a 4, but I stopped because I remembered you told me to be careful with NSAIDs due to my kidney lab history and blood pressure.
+
+Dr. Lin: Very smart move. Given your hypertension and kidney profile, we do want to avoid regular NSAID use until we review your latest metabolic panel.
+
+Dr. Lin: Here is what I’m thinking for our immediate evaluation steps. Today, I want to perform a physical exam on the joint, order an X-ray of your right knee to check for joint space narrowing, and run a venous Doppler ultrasound on your right leg to rule out a deep vein thrombosis given the unilateral swelling. We'll also pull a fresh Comprehensive Metabolic Panel (CMP) and hs-CRP to check inflammatory markers and kidney function.
+
+Patient: That sounds thorough. Should I keep working or stay off my feet?
+
+Dr. Lin: I'm going to recommend modified work duties—limiting continuous standing to no more than 30 minutes at a time—until we get the imaging results back. I'll also write a prescription for a temporary compression sleeve for daytime use. Once the lab and ultrasound results come back in 24 to 48 hours, we'll schedule a follow-up visit to review the plan.
+
+Patient: Sounds good, Dr. Lin. Thank you.

@@ -1,0 +1,8 @@
+For now, can you generate a transcript of a conversation between a physician and a patient. 
+
+Some context - 
+Patient has some chronic prior conditions but needs the physicians advice on some new condition. So the physician asks the patient questions about their condition before evaluating follow-on actions. As far as possible try to ask questions that generate quantitative responses as well as qualitative (eg - "on a scale of 1-10, 10 being VERY painful.. " etc) 
+
+More context about follow-on processing- 
+I will have an LLM generate follow-on list of to-dos based on the physician's baseline evaluation. 
+
