@@ -1,0 +1,86 @@
+========================================================================
+VERBATIM — PATIENT INTAKE AUDIT TRAIL
+ALCOA+ / 21 CFR Part 11 aligned record
+========================================================================
+
+SESSION METADATA
+  Session ID .......... VB-MDQ7X2K1
+  Application ......... Verbatim prototype v0.1 (browser speech engine)
+  Started ............. 2026-07-25T14:02:11Z
+  Completed ........... 2026-07-25T14:02:55Z
+  Language spoken ..... es-ES
+  Capture method ...... speech (Web Speech API)
+  Data classification . SYNTHETIC / TEST DATA — no real PHI
+
+TRIAGE DETERMINATION
+  Condition category .. CARDIAC (Cardíaco / dolor de pecho)
+  Triage priority ..... EMERGENT
+  Emergency flag ...... YES — red flag detected
+  Basis ............... keyword-based routing (PROTOTYPE — not clinically validated)
+
+========================================================================
+VERBATIM TRANSCRIPT  (Original — ALCOA+ 'O')
+========================================================================
+  [00] 2026-07-25T14:02:11Z  ASSISTANT
+       Hola, soy el asistente de admisión. Le voy a hacer unas preguntas cortas para que su equipo médico sepa cómo ayudarle. Dígame, ¿por qué vino hoy?
+  [01] 2026-07-25T14:02:24Z  PATIENT  
+       Me duele mucho el pecho desde esta mañana
+  [02] 2026-07-25T14:02:27Z  ASSISTANT
+       Gracias por decírmelo. ¿Cómo es el dolor: presión, ardor, o punzante?
+  [03] 2026-07-25T14:02:38Z  PATIENT  
+       Es como una presión muy fuerte
+  [04] 2026-07-25T14:02:41Z  ASSISTANT
+       Gracias. ¿El dolor se le va al brazo, al cuello o a la mandíbula?
+  [05] 2026-07-25T14:02:52Z  PATIENT  
+       Sí, se me va al brazo izquierdo
+  [06] 2026-07-25T14:02:55Z  ASSISTANT
+       Gracias por decírmelo. Voy a avisarle a su equipo médico ahora mismo para que le atiendan de inmediato. Quédese aquí conmigo.
+
+========================================================================
+STRUCTURED FIELDS WITH SOURCE TRACEABILITY
+(Attributable · Contemporaneous · Original · Accurate)
+========================================================================
+
+  FIELD ............... Motivo de consulta  [chief_complaint]
+  Value ............... Me duele mucho el pecho desde esta mañana
+  Stated by patient ... YES — patient's own words
+  Source turn ......... #1
+  Source span ......... "Me duele mucho el pecho desde esta mañana"
+  Captured at ......... 2026-07-25T14:02:24Z
+
+  FIELD ............... Carácter del dolor  [pain_character]
+  Value ............... Es como una presión muy fuerte
+  Stated by patient ... YES — patient's own words
+  Source turn ......... #3
+  Source span ......... "Es como una presión muy fuerte"
+  Captured at ......... 2026-07-25T14:02:38Z
+
+  FIELD ............... red_flags  [red_flags]
+  Value ............... dolor irradiado
+  Stated by patient ... YES — patient's own words
+  Source turn ......... #5
+  Source span ......... "Sí, se me va al brazo izquierdo"
+  Captured at ......... 2026-07-25T14:02:52Z
+
+========================================================================
+ELECTRONIC SIGNATURE  (21 CFR Part 11)
+========================================================================
+  Status .............. UNSIGNED
+  Awaiting clinician review and 21 CFR Part 11 electronic signature.
+
+  Signer name ......... ____________________________________
+  Signer ID ........... ____________________________________
+  Date / time ......... ____________________________________
+  Meaning of signature  'Reviewed and approved for the record'
+
+========================================================================
+RECORD INTEGRITY
+========================================================================
+  SHA-256 of record ... 0318ab01f6cb78fb98f4781edbc625a0b521d5284faa99875b91bc2f26f116c3
+  Any modification to the record above changes this hash,
+  making post-hoc alteration detectable (tamper-evident).
+
+  Generated ........... 2026-07-25T14:03:02Z
+========================================================================
+PROTOTYPE — synthetic data only. Triage logic not clinically validated.
+========================================================================
