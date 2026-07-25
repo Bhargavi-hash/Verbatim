@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Verbatim — Intake Avatar</title>
+<style>
+  :root{--navy:#0f2942;--teal:#1a7a8c;--bg:#f4f7f9;--card:#fff;--line:#dfe6ec;
+        --alert:#c0392b;--warn:#d68910;--ok:#1e8449;--muted:#6b7c8c;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg);color:var(--navy);}
+  header{background:var(--navy);color:#fff;padding:14px 20px;display:flex;
+         align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  header h1{margin:0;font-size:18px;letter-spacing:.5px}
+  header span{font-size:12px;opacity:.75}
+  .wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px;max-width:1200px;margin:0 auto}
+  @media(max-width:860px){.wrap{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .card h2{margin:0 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+  #avatar{width:96px;height:96px;border-radius:50%;background:var(--teal);margin:0 auto 12px;
+          display:flex;align-items:center;justify-content:center;transition:transform .15s}
+  #avatar.speaking{animation:pulse 1s infinite}
+  #avatar.listening{background:var(--ok)}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+  #avatar svg{width:44px;height:44px;fill:#fff}
+  #status{text-align:center;font-size:13px;color:var(--muted);min-height:18px;margin-bottom:12px}
+  #bubble{background:#eaf4f6;border-left:3px solid var(--teal);padding:12px;border-radius:6px;
+          font-size:16px;line-height:1.5;min-height:60px}
+  .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  button{flex:1;min-width:120px;padding:11px 14px;border:0;border-radius:7px;font-size:14px;
+         font-weight:600;cursor:pointer;background:var(--teal);color:#fff}
+  button.secondary{background:#e6ecf1;color:var(--navy)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  #typed{width:100%;padding:10px;border:1px solid var(--line);border-radius:7px;font-size:14px;margin-top:8px}
+  #transcript{max-height:260px;overflow-y:auto;font-size:14px}
+  .turn{padding:7px 0;border-bottom:1px solid #f0f4f7}
+  .turn .who{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+  .turn.patient .who{color:var(--teal)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  td{padding:6px 4px;border-bottom:1px solid #f0f4f7;vertical-align:top}
+  td.k{color:var(--muted);width:42%}
+  .badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;
+         font-weight:700;letter-spacing:.5px}
+  .EMERGENT{background:#fdecea;color:var(--alert)}
+  .URGENT{background:#fdf3e2;color:var(--warn)}
+  .ROUTINE{background:#eaf6ee;color:var(--ok)}
+  #alert{display:none;background:#fdecea;border:1px solid var(--alert);color:var(--alert);
+         padding:12px;border-radius:8px;font-weight:700;margin-bottom:12px}
+  .inferred{color:var(--warn);font-size:11px;font-style:italic}
+  .note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <h1>VERBATIM · Admisión / Intake</h1>
+  <span>Browser speech — no API key required</span>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Asistente</h2>
+    <div id="avatar"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.9V21h2v-3.1A7 7 0 0019 11h-2z"/></svg></div>
+    <div id="status">Listo para empezar</div>
+    <div id="bubble">Presione «Empezar» para comenzar la admisión.</div>
+    <div class="btns">
+      <button id="start">Empezar</button>
+      <button id="speak" class="secondary" disabled>🎤 Hablar</button>
+      <button id="reset" class="secondary">Reiniciar</button>
+    </div>
+    <input id="typed" placeholder="…o escriba la respuesta aquí y presione Enter" disabled/>
+    <div class="note">Tip: si el micrófono no funciona, escriba las respuestas. El flujo es idéntico.</div>
+    <div id="diag" class="note" style="background:#f7fafc;border:1px solid var(--line);border-radius:6px;padding:8px;margin-top:8px;white-space:pre-line"></div>
+    <button id="miccheck" class="secondary" style="margin-top:8px">🔧 Probar micrófono</button>
+  </div>
+
+  <div class="card">
+    <h2>Conversación</h2>
+    <div id="transcript"></div>
+  </div>
+
+  <div class="card" style="grid-column:1/-1">
+    <h2>Ficha de admisión — generada en vivo</h2>
+    <div id="alert">⚠ SEÑAL DE ALARMA DETECTADA — atención inmediata</div>
+    <div style="margin-bottom:10px">
+      <strong>Categoría:</strong> <span id="cat">—</span> &nbsp;·&nbsp;
+      <strong>Prioridad:</strong> <span id="prio">—</span>
+    </div>
+    <table id="form"><tbody></tbody></table>
+    <div class="btns" style="margin-top:14px">
+      <button id="exportTxt" class="secondary" disabled>⬇ Descargar audit trail (.txt)</button>
+      <button id="exportJson" class="secondary" disabled>⬇ Descargar registro (.json)</button>
+    </div>
+    <div class="note">Prototipo. Las reglas de triage son ilustrativas y no han sido validadas clínicamente.</div>
+  </div>
+</div>
+
+<script>
+const CATEGORIES = {
+  CARDIAC:{name:"Cardíaco / dolor de pecho",priority:"EMERGENT",
+    kw:["pecho","corazon","corazón","palpitacion","palpitación","presion en el pecho","presión en el pecho"],
+    qs:[["pain_character","¿Cómo es el dolor: presión, ardor, o punzante?"],
+        ["radiation","¿El dolor se le va al brazo, al cuello o a la mandíbula?"],
+        ["severity_0_10","Del cero al diez, ¿qué tan fuerte es el dolor?"],
+        ["associated_symptoms","¿Le falta el aire, tiene náusea, o está sudando frío?"],
+        ["exertional","¿Le pasó haciendo esfuerzo o estando en reposo?"],
+        ["cardiac_history","¿Ha tenido problemas del corazón antes?"]]},
+  RESPIRATORY:{name:"Respiratorio",priority:"URGENT",
+    kw:["respirar","aire","tos","ahogo","asma","pulmon","pulmón","silbido"],
+    qs:[["dyspnea_at_rest","¿Le falta el aire estando quieto, o solo al moverse?"],
+        ["cough","¿Tiene tos? ¿Saca flema?"],
+        ["fever","¿Ha tenido fiebre?"],
+        ["lung_history","¿Tiene asma, EPOC u otro problema del pulmón?"],
+        ["home_inhaler","¿Usa oxígeno o inhalador en casa?"]]},
+  NEURO:{name:"Neurológico",priority:"EMERGENT",
+    kw:["cabeza","mareo","mareado","debilidad","hablar","vision","visión","adormecido","entumecido","desmay"],
+    qs:[["last_known_well","¿A qué hora se sentía bien por última vez?"],
+        ["unilateral_weakness","¿Siente debilidad o adormecimiento en la cara, el brazo o la pierna?"],
+        ["speech_difficulty","¿Ha tenido dificultad para hablar o para entender?"],
+        ["vision_change","¿Ha notado cambios en la vista?"],
+        ["head_injury","¿Se golpeó la cabeza o se cayó?"]]},
+  GI:{name:"Gastrointestinal",priority:"URGENT",
+    kw:["estomago","estómago","barriga","abdomen","nausea","náusea","vomit","diarrea","vientre"],
+    qs:[["pain_location","¿En qué parte del abdomen le duele?"],
+        ["severity_0_10","Del cero al diez, ¿qué tan fuerte es?"],
+        ["vomiting","¿Ha vomitado? ¿Ha visto sangre?"],
+        ["bowel_changes","¿Ha tenido diarrea o estreñimiento?"],
+        ["last_oral_intake","¿Cuándo comió por última vez?"]]},
+  MSK_INJURY:{name:"Lesión / musculoesquelético",priority:"ROUTINE",
+    kw:["cai","caí","caida","caída","golpe","torci","torcí","tobillo","rodilla","espalda","fractur","hueso","brazo roto"],
+    qs:[["mechanism_of_injury","¿Cómo pasó? ¿Qué estaba haciendo?"],
+        ["body_region","¿Qué parte del cuerpo le duele?"],
+        ["can_bear_weight","¿Puede mover esa parte o apoyar el peso?"],
+        ["severity_0_10","Del cero al diez, ¿qué tan fuerte es el dolor?"],
+        ["deformity_swelling","¿Ve hinchazón o algo fuera de lugar?"]]},
+  INFECTION:{name:"Fiebre / infección",priority:"URGENT",
+    kw:["fiebre","escalofrio","escalofrío","gripe","infeccion","infección","temperatura","calentura"],
+    qs:[["fever_duration","¿Desde cuándo tiene fiebre?"],
+        ["max_temperature","¿Qué tan alta ha estado?"],
+        ["other_symptoms","¿Qué otros síntomas tiene?"],
+        ["sick_contacts","¿Ha estado cerca de alguien enfermo?"],
+        ["recent_travel","¿Ha viajado recientemente?"]]},
+  GENERAL:{name:"General",priority:"ROUTINE",kw:[],
+    qs:[["onset","¿Cuándo empezó?"],
+        ["duration","¿Cuánto le ha durado?"],
+        ["severity_0_10","Del cero al diez, ¿qué tan fuerte o molesto es?"],
+        ["other_symptoms","¿Ha notado algo más junto con eso?"]]}
+};
+
+const RED_FLAGS = [
+  {kw:["brazo izquierdo","se me va al brazo","mandibula","mandíbula"],why:"dolor irradiado"},
+  {kw:["no puedo respirar","no me llega el aire","me ahogo"],why:"dificultad respiratoria grave"},
+  {kw:["no puedo hablar","se me traba","cara caida","cara caída"],why:"posible signo de ACV"},
+  {kw:["peor dolor de cabeza","el peor dolor"],why:"cefalea en trueno"},
+  {kw:["mucha sangre","sangrando mucho","no para de sangrar"],why:"sangrado abundante"},
+  {kw:["me desmaye","me desmayé","perdi el conocimiento","perdí el conocimiento"],why:"síncope"}
+];
+
+const UNIVERSAL = [
+  ["current_medications","¿Toma algún medicamento actualmente?"],
+  ["allergies","¿Es alérgico a algún medicamento?"],
+  ["relevant_history","¿Tiene alguna condición médica importante?"]
+];
+
+const LABELS={pain_character:"Carácter del dolor",radiation:"Irradiación",severity_0_10:"Severidad (0-10)",
+ associated_symptoms:"Síntomas asociados",exertional:"Relación con esfuerzo",cardiac_history:"Historia cardíaca",
+ dyspnea_at_rest:"Disnea en reposo",cough:"Tos",fever:"Fiebre",lung_history:"Historia pulmonar",
+ home_inhaler:"Inhalador/oxígeno",last_known_well:"Última vez bien",unilateral_weakness:"Debilidad unilateral",
+ speech_difficulty:"Dificultad al hablar",vision_change:"Cambios visuales",head_injury:"Trauma craneal",
+ pain_location:"Localización",vomiting:"Vómito",bowel_changes:"Cambios intestinales",last_oral_intake:"Última ingesta",
+ mechanism_of_injury:"Mecanismo",body_region:"Región afectada",can_bear_weight:"Carga de peso",
+ deformity_swelling:"Deformidad/hinchazón",fever_duration:"Duración fiebre",max_temperature:"Temp. máxima",
+ other_symptoms:"Otros síntomas",sick_contacts:"Contactos enfermos",recent_travel:"Viaje reciente",
+ onset:"Inicio",duration:"Duración",chief_complaint:"Motivo de consulta",
+ current_medications:"Medicamentos",allergies:"Alergias",relevant_history:"Antecedentes"};
+
+let state={phase:0,qi:0,cat:null,queue:[],data:{},emergency:false,turns:[]};
+const $=id=>document.getElementById(id);
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+
+function say(text){
+  $("bubble").textContent=text;
+  addTurn("agent",text);
+  $("avatar").className="speaking";
+  $("status").textContent="Hablando…";
+  if(window.speechSynthesis){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="es-ES"; u.rate=0.95;
+    const v=speechSynthesis.getVoices().find(x=>x.lang.startsWith("es"));
+    if(v)u.voice=v;
+    u.onend=()=>{$("avatar").className="";$("status").textContent="Su turno — hable o escriba";};
+    speechSynthesis.speak(u);
+  } else {
+    $("avatar").className="";$("status").textContent="Su turno — hable o escriba";
+  }
+}
+
+function addTurn(who,text){
+  state.turns.push({who,text,ts:new Date().toISOString()});
+  const d=document.createElement("div");
+  d.className="turn "+who;
+  d.innerHTML='<div class="who">'+(who==="agent"?"Asistente":"Paciente")+'</div><div>'+text+'</div>';
+  $("transcript").appendChild(d);
+  $("transcript").scrollTop=$("transcript").scrollHeight;
+}
+
+function classify(text){
+  const t=norm(text);
+  for(const [key,c] of Object.entries(CATEGORIES)){
+    if(c.kw.some(k=>t.includes(norm(k)))) return key;
+  }
+  return "GENERAL";
+}
+
+function checkRedFlags(text){
+  const t=norm(text);
+  const hits=RED_FLAGS.filter(f=>f.kw.some(k=>t.includes(norm(k))));
+  return hits.map(h=>h.why);
+}
+
+function render(){
+  const tb=$("form").querySelector("tbody"); tb.innerHTML="";
+  for(const [k,v] of Object.entries(state.data)){
+    const tr=document.createElement("tr");
+    const inferred = v.stated===false?' <span class="inferred">(inferido)</span>':'';
+    tr.innerHTML='<td class="k">'+(LABELS[k]||k)+'</td><td>'+v.value+inferred+'</td>';
+    tb.appendChild(tr);
+  }
+  if(state.cat){
+    $("cat").textContent=CATEGORIES[state.cat].name;
+    const p=state.emergency?"EMERGENT":CATEGORIES[state.cat].priority;
+    $("prio").innerHTML='<span class="badge '+p+'">'+p+'</span>';
+  }
+  $("alert").style.display=state.emergency?"block":"none";
+}
+
+function handle(answer){
+  if(!answer.trim())return;
+  addTurn("patient",answer);
+
+  const flags=checkRedFlags(answer);
+  if(flags.length){
+    state.emergency=true;
+    state.data["red_flags"]={value:flags.join(", "),stated:true,ts:new Date().toISOString(),srcTurn:state.turns.length-1};
+    render();
+    say("Gracias por decírmelo. Voy a avisarle a su equipo médico ahora mismo para que le atiendan de inmediato. Quédese aquí conmigo.");
+    finish(); return;
+  }
+
+  if(state.phase===0){
+    state.data["chief_complaint"]={value:answer,stated:true,ts:new Date().toISOString(),srcTurn:state.turns.length-1};
+    state.cat=classify(answer);
+    state.queue=[...CATEGORIES[state.cat].qs,...UNIVERSAL];
+    state.phase=1; state.qi=0;
+    render();
+    setTimeout(()=>ask("Gracias por decírmelo. "),700);
+    return;
+  }
+
+  const [key]=state.queue[state.qi];
+  state.data[key]={value:answer,stated:true,ts:new Date().toISOString(),srcTurn:state.turns.length-1};
+  // demonstrate inference: medication implies history
+  if(key==="current_medications" && /lisinopril|presion|presión|amlodipin/i.test(answer)){
+    state.data["inferred_hypertension"]={value:"Hipertensión (deducida del medicamento)",stated:false,ts:new Date().toISOString(),srcTurn:state.turns.length-1};
+  }
+  state.qi++;
+  render();
+  if(state.qi<state.queue.length){
+    const ack=["Gracias. ","Entiendo. ","Ya casi terminamos. ","Muy bien. "][state.qi%4];
+    setTimeout(()=>ask(ack),700);
+  } else {
+    setTimeout(()=>{
+      say("Gracias. Ya tengo lo que necesita su equipo médico. Toda esta información va para ellos y alguien vendrá a verle.");
+      finish();
+    },700);
+  }
+}
+
+function ask(prefix){ say((prefix||"")+state.queue[state.qi][1]); }
+
+function finish(){
+  $("speak").disabled=true; $("typed").disabled=true;
+  state.completedAt=new Date().toISOString();
+  $("exportTxt").disabled=false; $("exportJson").disabled=false;
+  $("status").textContent="Admisión completa — audit trail listo para descargar";
+}
+
+// ---- speech recognition ----
+let rec=null;
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SR){
+  rec=new SR(); rec.lang="es-ES"; rec.interimResults=false; rec.maxAlternatives=1;
+  rec.onresult=e=>{ state.usedMic=true; handle(e.results[0][0].transcript); };
+  rec.onerror=e=>{ $("status").textContent="Micrófono no disponible — escriba la respuesta"; $("avatar").className="";
+    var m={"not-allowed":"Permiso denegado. Permita el micrófono en la barra de direcciones, y en macOS active Chrome en Ajustes → Privacidad → Micrófono.","service-not-allowed":"El navegador bloqueó el servicio. Verifique que la URL sea http://localhost y no file://","no-speech":"No se detectó voz. Hable más cerca del micrófono.","audio-capture":"No se encontró micrófono.","network":"Este motor de voz requiere conexión a internet."};
+    diag("Error de reconocimiento: "+e.error+"\n"+(m[e.error]||"")); };
+  rec.onend=()=>{ if($("avatar").className==="listening"){$("avatar").className="";} };
+} else {
+  $("status").textContent="Este navegador no soporta micrófono — use Chrome, o escriba las respuestas";
+}
+
+async function ensureMic(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    throw new Error("Este navegador no expone el micrófono. Use Chrome.");
+  }
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  stream.getTracks().forEach(t=>t.stop());   // we only needed the permission grant
+}
+
+$("speak").onclick=async ()=>{
+  if(!rec){ diag("Reconocimiento de voz no disponible en este navegador. Use Chrome, o escriba la respuesta."); return; }
+  speechSynthesis.cancel();
+  try{
+    await ensureMic();
+  }catch(err){
+    diag("No se pudo acceder al micrófono:\n"+err.name+" — "+err.message+"\n\n"+hintFor(err.name));
+    $("avatar").className=""; $("status").textContent="Micrófono bloqueado — escriba la respuesta";
+    return;
+  }
+  $("avatar").className="listening"; $("status").textContent="Escuchando…";
+  try{ rec.start(); }catch(e){ diag("rec.start(): "+e.message); }
+};
+
+function diag(msg){ $("diag").textContent=msg; }
+
+function hintFor(name){
+  if(name==="NotAllowedError") return "→ Permiso denegado. Haga clic en el icono 🔒 o 🎤 en la barra de direcciones y permita el micrófono. En macOS: Ajustes del Sistema → Privacidad y seguridad → Micrófono → active Chrome.";
+  if(name==="NotFoundError")  return "→ No se detectó ningún micrófono conectado.";
+  if(name==="NotReadableError")return "→ Otra aplicación está usando el micrófono (Zoom, Meet, etc.). Ciérrela e intente de nuevo.";
+  return "→ Verifique que la URL empiece con http://localhost — el micrófono no funciona con file://";
+}
+
+$("miccheck").onclick=async ()=>{
+  const lines=[];
+  lines.push("URL: "+location.protocol+"//"+location.host);
+  lines.push(location.protocol==="file:"
+    ? "✗ PROBLEMA: está abriendo el archivo directamente (file://). El micrófono NO funciona así.\n  Solución: en Terminal ejecute  python3 -m http.server 8000  y abra http://localhost:8000/verbatim_voice.html"
+    : "✓ Contexto seguro correcto");
+  lines.push("Contexto seguro (isSecureContext): "+(window.isSecureContext?"✓ sí":"✗ no"));
+  lines.push("SpeechRecognition disponible: "+(SR?"✓ sí":"✗ no — use Chrome"));
+  lines.push("SpeechSynthesis disponible: "+(window.speechSynthesis?"✓ sí":"✗ no"));
+  try{
+    await ensureMic();
+    lines.push("Permiso de micrófono: ✓ concedido");
+  }catch(err){
+    lines.push("Permiso de micrófono: ✗ "+err.name+" — "+err.message);
+    lines.push(hintFor(err.name));
+  }
+  diag(lines.join("\n"));
+};
+
+$("typed").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){ handle(e.target.value); e.target.value=""; }
+});
+$("start").onclick=()=>{
+  state={phase:0,qi:0,cat:null,queue:[],data:{},emergency:false,turns:[]};
+  $("transcript").innerHTML=""; $("form").querySelector("tbody").innerHTML="";
+  $("cat").textContent="—"; $("prio").textContent="—"; $("alert").style.display="none";
+  state.sessionId="VB-"+Date.now().toString(36).toUpperCase();
+  state.startedAt=new Date().toISOString();
+  state.usedMic=false;
+  $("exportTxt").disabled=true; $("exportJson").disabled=true;
+  $("speak").disabled=false; $("typed").disabled=false;
+  say("Hola, soy el asistente de admisión. Le voy a hacer unas preguntas cortas para que su equipo médico sepa cómo ayudarle. Dígame, ¿por qué vino hoy?");
+};
+$("reset").onclick=()=>location.reload();
+
+// ================= AUDIT TRAIL EXPORT =================
+const APP_VERSION="Verbatim prototype v0.1 (browser speech engine)";
+state.sessionId="VB-"+Date.now().toString(36).toUpperCase();
+state.startedAt=null;
+
+async function sha256(str){
+  if(!crypto||!crypto.subtle) return "(hash unavailable in this context)";
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function auditRecord(){
+  const prio = state.emergency ? "EMERGENT" : (state.cat?CATEGORIES[state.cat].priority:"—");
+  return {
+    session_id: state.sessionId,
+    application: APP_VERSION,
+    started_at: state.startedAt,
+    completed_at: state.completedAt,
+    language_spoken: "es-ES",
+    capture_method: state.usedMic ? "speech (Web Speech API)" : "typed entry",
+    condition_category: state.cat,
+    condition_category_label: state.cat?CATEGORIES[state.cat].name:null,
+    triage_priority: prio,
+    emergency_flag: state.emergency,
+    transcript: state.turns,
+    fields: Object.entries(state.data).map(([k,v])=>({
+      field:k, label:LABELS[k]||k, value:v.value,
+      stated_by_patient:v.stated, source_turn:v.srcTurn,
+      source_span: v.srcTurn!=null && state.turns[v.srcTurn] ? state.turns[v.srcTurn].text : null,
+      captured_at:v.ts
+    })),
+    signature:{ status:"UNSIGNED",
+      note:"Awaiting clinician review and 21 CFR Part 11 electronic signature." },
+    data_classification:"SYNTHETIC / TEST DATA — no real PHI"
+  };
+}
+
+async function auditText(){
+  const r=auditRecord();
+  const hash=await sha256(JSON.stringify(r));
+  const L=[];
+  const line="=".repeat(72);
+  L.push(line);
+  L.push("VERBATIM — PATIENT INTAKE AUDIT TRAIL");
+  L.push("ALCOA+ / 21 CFR Part 11 aligned record");
+  L.push(line);
+  L.push("");
+  L.push("SESSION METADATA");
+  L.push("  Session ID .......... "+r.session_id);
+  L.push("  Application ......... "+r.application);
+  L.push("  Started ............. "+r.started_at);
+  L.push("  Completed ........... "+r.completed_at);
+  L.push("  Language spoken ..... "+r.language_spoken);
+  L.push("  Capture method ...... "+r.capture_method);
+  L.push("  Data classification . "+r.data_classification);
+  L.push("");
+  L.push("TRIAGE DETERMINATION");
+  L.push("  Condition category .. "+(r.condition_category||"—")+" ("+(r.condition_category_label||"—")+")");
+  L.push("  Triage priority ..... "+r.triage_priority);
+  L.push("  Emergency flag ...... "+(r.emergency_flag?"YES — red flag detected":"no"));
+  L.push("  Basis ............... keyword-based routing (PROTOTYPE — not clinically validated)");
+  L.push("");
+  L.push(line);
+  L.push("VERBATIM TRANSCRIPT  (Original — ALCOA+ 'O')");
+  L.push(line);
+  r.transcript.forEach((t,i)=>{
+    L.push("  ["+String(i).padStart(2,"0")+"] "+t.ts+"  "+(t.who==="agent"?"ASSISTANT":"PATIENT  "));
+    L.push("       "+t.text);
+  });
+  L.push("");
+  L.push(line);
+  L.push("STRUCTURED FIELDS WITH SOURCE TRACEABILITY");
+  L.push("(Attributable · Contemporaneous · Original · Accurate)");
+  L.push(line);
+  r.fields.forEach(f=>{
+    L.push("");
+    L.push("  FIELD ............... "+f.label+"  ["+f.field+"]");
+    L.push("  Value ............... "+f.value);
+    L.push("  Stated by patient ... "+(f.stated_by_patient?"YES — patient's own words":"NO — INFERRED BY SYSTEM"));
+    L.push("  Source turn ......... "+(f.source_turn!=null?"#"+f.source_turn:"n/a"));
+    L.push("  Source span ......... "+(f.source_span?'"'+f.source_span+'"':"(derived, no direct utterance)"));
+    L.push("  Captured at ......... "+f.captured_at);
+  });
+  L.push("");
+  L.push(line);
+  L.push("ELECTRONIC SIGNATURE  (21 CFR Part 11)");
+  L.push(line);
+  L.push("  Status .............. "+r.signature.status);
+  L.push("  "+r.signature.note);
+  L.push("");
+  L.push("  Signer name ......... ____________________________________");
+  L.push("  Signer ID ........... ____________________________________");
+  L.push("  Date / time ......... ____________________________________");
+  L.push("  Meaning of signature  'Reviewed and approved for the record'");
+  L.push("");
+  L.push(line);
+  L.push("RECORD INTEGRITY");
+  L.push(line);
+  L.push("  SHA-256 of record ... "+hash);
+  L.push("  Any modification to the record above changes this hash,");
+  L.push("  making post-hoc alteration detectable (tamper-evident).");
+  L.push("");
+  L.push("  Generated ........... "+new Date().toISOString());
+  L.push(line);
+  L.push("PROTOTYPE — synthetic data only. Triage logic not clinically validated.");
+  L.push(line);
+  return L.join("\n");
+}
+
+function download(name,content,type){
+  const b=new Blob([content],{type:type});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+}
+
+$("exportTxt").onclick=async ()=>{
+  download("verbatim_audit_"+state.sessionId+".txt", await auditText(), "text/plain");
+};
+$("exportJson").onclick=async ()=>{
+  const r=auditRecord(); r.record_sha256=await sha256(JSON.stringify(r));
+  download("verbatim_record_"+state.sessionId+".json", JSON.stringify(r,null,2), "application/json");
+};
+
+if(window.speechSynthesis)speechSynthesis.getVoices();
+</script>
+</body>
+</html>
