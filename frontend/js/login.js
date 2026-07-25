@@ -18,5 +18,5 @@ document.getElementById("loginForm").addEventListener("submit",function(e){
     e.preventDefault();
 
     // Dummy login — no real auth, just routes into the app
-    window.location.href="verbatim_voice.html";
+    window.location.href="appointment.html";
 });
