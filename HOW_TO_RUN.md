@@ -29,22 +29,27 @@ on stage, no cost.
 
 ## Run it — 3 steps
 
-### Step 1 — Put the file somewhere you can find it
-`verbatim_voice.html` is the whole app. One file. Nothing to install.
+### Step 1 — Find the file
+`frontend/pages/verbatim_voice.html` is the whole app. Its CSS and JS live
+alongside it in `frontend/css/` and `frontend/js/`. Nothing to install.
 
 ### Step 2 — Start a tiny local web server
 The microphone will NOT work if you just double-click the file. Browsers block mic
 access on `file://` for security. You need `localhost`. Open Terminal and run:
 
 ```bash
-cd /path/to/the/folder/with/the/file
+cd /path/to/the/repo/root
 python3 -m http.server 8000
 ```
 
 (If that errors, try `python -m http.server 8000`.)
 
 ### Step 3 — Open it in Chrome
-Go to: **http://localhost:8000/verbatim_voice.html**
+Go to: **http://localhost:8000/frontend/pages/login.html**
+
+Sign in with anything (it's a dummy login, no real auth) and it forwards you
+into **http://localhost:8000/frontend/pages/verbatim_voice.html**. You can also
+go straight to the second URL if you want to skip the login screen.
 
 Click **Empezar**. The avatar greets you in Spanish. Click **🎤 Hablar** and answer.
 Chrome will ask permission for the microphone — click Allow.
