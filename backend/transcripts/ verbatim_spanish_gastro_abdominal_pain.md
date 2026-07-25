@@ -1,4 +1,4 @@
-# Verbatim Medical Intake Demo
+# Verbatim Medical Intake Demo - Gastrology
 
 ## Scenario
 
