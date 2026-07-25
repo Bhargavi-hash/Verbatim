@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Verbatim — Intake Avatar</title>
+<link rel="stylesheet" href="../css/verbatim_voice.css">
+</head>
+<body>
+<header>
+  <h1>VERBATIM · Admisión / Intake</h1>
+  <span>Browser speech — no API key required</span>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Asistente</h2>
+    <div id="avatar"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.9V21h2v-3.1A7 7 0 0019 11h-2z"/></svg></div>
+    <div id="status">Listo para empezar</div>
+    <div id="bubble">Presione «Empezar» para comenzar la admisión.</div>
+    <div class="btns">
+      <button id="start">Empezar</button>
+      <button id="speak" class="secondary" disabled>🎤 Hablar</button>
+      <button id="reset" class="secondary">Reiniciar</button>
+    </div>
+    <input id="typed" placeholder="…o escriba la respuesta aquí y presione Enter" disabled/>
+    <div class="note">Tip: si el micrófono no funciona, escriba las respuestas. El flujo es idéntico.</div>
+    <div id="diag" class="note" style="background:#f7fafc;border:1px solid var(--line);border-radius:6px;padding:8px;margin-top:8px;white-space:pre-line"></div>
+    <button id="miccheck" class="secondary" style="margin-top:8px">🔧 Probar micrófono</button>
+  </div>
+
+  <div class="card">
+    <h2>Conversación</h2>
+    <div id="transcript"></div>
+  </div>
+
+  <div class="card" style="grid-column:1/-1">
+    <h2>Ficha de admisión — generada en vivo</h2>
+    <div id="alert">⚠ SEÑAL DE ALARMA DETECTADA — atención inmediata</div>
+    <div style="margin-bottom:10px">
+      <strong>Categoría:</strong> <span id="cat">—</span> &nbsp;·&nbsp;
+      <strong>Prioridad:</strong> <span id="prio">—</span>
+    </div>
+    <table id="form"><tbody></tbody></table>
+    <div class="btns" style="margin-top:14px">
+      <button id="exportTxt" class="secondary" disabled>⬇ Descargar audit trail (.txt)</button>
+      <button id="exportJson" class="secondary" disabled>⬇ Descargar registro (.json)</button>
+    </div>
+    <div class="note">Prototipo. Las reglas de triage son ilustrativas y no han sido validadas clínicamente.</div>
+  </div>
+</div>
+
+<script src="../js/verbatim_voice.js"></script>
+</body>
+</html>
