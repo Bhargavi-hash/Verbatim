@@ -303,3 +303,13 @@ A Spanish-speaking patient visits a primary care clinic with low mood, sleep and
 ## Clinical Safety Note
 
 Verbatim supports intake, translation, summarization, and clinical decision support. Final diagnosis, treatment, and referral decisions must be reviewed and approved by a licensed healthcare professional. Safety screening during intake does not replace clinical judgment; any positive safety concerns require immediate clinician review.
+
+---
+
+## Audit Trail
+
+- **Transcript window:** 2026-07-25 14:15 UTC — 2026-07-25 14:23 UTC
+- **User authentication:** User ID `USR-001`
+- **Record provenance:** This record was produced using Verbatim ver. 0.1.0-demo
+- **Original Language:** Spanish
+- **Output Language:** English
