@@ -47,9 +47,13 @@ python3 -m http.server 8000
 ### Step 3 — Open it in Chrome
 Go to: **http://localhost:8000/frontend/pages/login.html**
 
-Sign in with anything (it's a dummy login, no real auth) and it forwards you
-into **http://localhost:8000/frontend/pages/verbatim_voice.html**. You can also
-go straight to the second URL if you want to skip the login screen.
+Sign in with anything (it's a dummy login, no real auth) and it forwards you to
+the appointments list. Click **Start Intake** on any appointment to land on
+**verbatim_voice.html**. You can also open any of the three pages directly if
+you want to skip ahead:
+- `frontend/pages/login.html` → dummy sign-in
+- `frontend/pages/appointment.html` → appointment list, "Start Intake" button
+- `frontend/pages/verbatim_voice.html` → the voice intake app itself
 
 Click **Empezar**. The avatar greets you in Spanish. Click **🎤 Hablar** and answer.
 Chrome will ask permission for the microphone — click Allow.
