@@ -1,0 +1,155 @@
+.review-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: nowrap;
+}
+
+.review-row .summary {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.review-row .patient {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.dark .review-row .patient {
+  color: var(--text);
+}
+
+.review-row .meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.review-row .actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+  padding: 30px 10px;
+  font-size: 14px;
+}
+
+/* ---- Physician summary sections (doctor-review.html) ---- */
+.summary-section {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.summary-section:last-child {
+  border-bottom: none;
+}
+
+.summary-section.flagged {
+  border-left: 3px solid var(--warn);
+  background: var(--warn-bg);
+  padding-left: 12px;
+  border-radius: 0 6px 6px 0;
+}
+
+.summary-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.summary-section-head h3 {
+  margin: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.flag-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--warn);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.flag-toggle input {
+  accent-color: var(--warn);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.summary-value {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.summary-value ul {
+  margin: 4px 0 0 18px;
+}
+
+.decision-panel textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text);
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+.decision-panel .btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.decision-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.decision-banner.approved {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.decision-banner.rejected {
+  background: var(--alert-bg);
+  color: var(--alert);
+}
+
+.followup-note {
+  margin-top: 8px;
+  font-weight: 400;
+  font-size: 13px;
+}

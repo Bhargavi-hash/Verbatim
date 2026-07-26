@@ -14,9 +14,23 @@ btn.onclick=()=>{
     localStorage.setItem("theme",dark?"dark":"light");
 };
 
+let selectedRole = "patient";
+const roleButtons = document.querySelectorAll(".role-button");
+
+roleButtons.forEach((roleButton) => {
+    roleButton.addEventListener("click", () => {
+        selectedRole = roleButton.dataset.role;
+        roleButtons.forEach((btn) => {
+            const isSelected = btn === roleButton;
+            btn.classList.toggle("active", isSelected);
+            btn.setAttribute("aria-selected", String(isSelected));
+        });
+    });
+});
+
 document.getElementById("loginForm").addEventListener("submit",function(e){
     e.preventDefault();
 
-    // Dummy login — no real auth, just routes into the app
-    window.location.href="appointment.html";
+    // Dummy login — no real auth, just routes into the app by role
+    window.location.href = selectedRole === "doctor" ? "doctor-dashboard.html" : "appointment.html";
 });

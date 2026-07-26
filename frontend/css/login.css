@@ -75,6 +75,34 @@ h1{
     margin-bottom:30px;
 }
 
+.role-toggle{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-bottom:24px;
+    padding:4px;
+    border-radius:10px;
+    background:var(--bg);
+    border:1px solid var(--border);
+}
+
+.role-button{
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:transparent;
+    color:var(--muted);
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.role-button.active{
+    background:var(--primary);
+    color:#fff;
+}
+
 label{
     display:block;
     margin-bottom:8px;

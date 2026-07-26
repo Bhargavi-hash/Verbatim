@@ -331,6 +331,11 @@ const I18N = {
 
 let state = { lang: "es", phase: 0, qi: 0, cat: null, queue: [], data: {}, emergency: false, turns: [] };
 const $ = id => document.getElementById(id);
+
+const apptId = new URLSearchParams(location.search).get("appt");
+const apptContext = (typeof findUpcomingAppointment === "function" && apptId)
+  ? findUpcomingAppointment(apptId)
+  : null;
 const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const T = () => I18N[state.lang];
 
@@ -459,6 +464,49 @@ function finish() {
   state.completedAt = new Date().toISOString();
   $("exportTxt").disabled = false; $("exportJson").disabled = false;
   $("status").textContent = T().ui.statusComplete;
+  submitForPhysicianReview();
+}
+
+function submitForPhysicianReview() {
+  if (typeof addReview !== "function" || typeof extractPhysicianSummary !== "function") return;
+
+  const fields = Object.entries(state.data).map(([k, v]) => ({
+    field: k, label: T().labels[k] || k, value: v.value, statedByPatient: v.stated
+  }));
+
+  const summary = extractPhysicianSummary({
+    fields,
+    category: state.cat,
+    categoryLabel: state.cat ? T().categories[state.cat].name : null,
+    triagePriority: state.emergency ? "EMERGENT" : (state.cat ? T().categories[state.cat].priority : "ROUTINE"),
+    emergencyFlag: state.emergency,
+    languageSpoken: T().speechLang,
+    startedAt: state.startedAt,
+    completedAt: state.completedAt,
+    userId: (typeof PROFILE !== "undefined" && PROFILE.userId) || "USR-001"
+  });
+
+  const now = new Date();
+
+  addReview({
+    id: "review-live-" + state.sessionId,
+    appointmentId: apptContext ? apptContext.id : null,
+    patientName: (typeof PROFILE !== "undefined" && PROFILE.name) || "Patient",
+    doctor: apptContext ? apptContext.doctor : "Unassigned Provider",
+    specialty: apptContext ? apptContext.specialty : "General Intake",
+    location: apptContext ? apptContext.location : "Verbatim Virtual Intake",
+    date: apptContext ? apptContext.date : now.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }),
+    time: apptContext ? apptContext.time : now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" }),
+    status: "pending",
+    summary,
+    transcript: state.turns,
+    sessionId: state.sessionId,
+    createdAt: state.completedAt,
+    flags: [],
+    followUpMessage: "",
+    decidedAt: null,
+    signature: (typeof buildSignature === "function") ? buildSignature("pending", null) : { status: "UNSIGNED", signerName: null, signerId: null, signedAt: null, meaning: null }
+  });
 }
 
 // ---- speech recognition ----

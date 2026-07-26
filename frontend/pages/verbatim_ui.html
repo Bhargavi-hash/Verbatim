@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Verbatim — Admisión Médica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="../css/verbatim_ui.css">
+</head>
+<body>
+
+<header class="navbar" data-role="patient">
+  <a class="navbar-brand" href="appointment.html">
+    <span class="navbar-mark">V</span> Verbatim
+  </a>
+  <nav class="navbar-links">
+    <a class="navbar-link" href="appointment.html">← Appointments</a>
+  </nav>
+  <div class="navbar-actions">
+    <span class="navbar-user">
+      <span class="avatar">MG</span>
+      <span>Maria Gonzalez</span>
+    </span>
+    <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ ASSISTANT ============ -->
+  <div class="card hero">
+    <p class="eyebrow">Asistente de admisión</p>
+
+    <div class="stage">
+
+      <!-- ============ FEMALE ============ -->
+      <div id="avF" class="avatar show">
+        <img src="avatar_female.png" alt="Dra. Elena"/>
+        <svg class="ovl" viewBox="0 0 440 440">
+          <circle class="ringc" cx="220" cy="220" r="205" fill="none" stroke="#4f46e5" stroke-width="4"/>
+          <g class="mouth-g" style="transform-origin:219px 218px">
+            <ellipse cx="219" cy="219" rx="17" ry="11" fill="#8d3b40" stroke="#6b262b" stroke-width="2"/>
+            <path d="M204 215q15 6 30 0z" fill="#fff"/>
+            <ellipse cx="219" cy="226" rx="7" ry="4" fill="#c4636a"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="halo"></div>
+
+      <div class="statusrow" id="statusrow">
+        <span class="dot"></span>
+        <span id="status">Listo para empezar</span>
+        <span class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i></span>
+      </div>
+    </div>
+
+    <div id="bubble">Presione «Empezar» para comenzar la admisión. Hable con naturalidad — el asistente detectará la especialidad y adaptará las preguntas.</div>
+
+    <div class="btns">
+      <button id="start">Empezar</button>
+      <button id="speak" class="ghost" disabled>🎤 Hablar</button>
+      <button id="reset" class="ghost" style="flex:0 0 auto;min-width:auto;padding:13px 16px">↻</button>
+    </div>
+    <div class="btns" id="listenRow" style="display:none;margin-top:8px">
+      <button id="doneSpeak">✓ Listo — ya terminé de hablar</button>
+    </div>
+    <div id="fixBanner">
+      <p><b>Corrija lo que necesite.</b> En el panel de la derecha, haga clic en cualquier respuesta
+      del paciente para <b>editar el texto</b>, o pulse <b>🎤 Regrabar</b> para decirla de nuevo.
+      No hace falta empezar de cero.</p>
+      <button id="resumeSummary">✓ Ya está correcto — continuar con el resumen</button>
+    </div>
+    <div id="interim" style="display:none;margin-top:10px;padding:12px 14px;border-radius:12px;
+      background:#f0fdf7;border:1px dashed #86e0b6;font-size:14.5px;color:#065f46;line-height:1.55"></div>
+    <div style="margin-top:10px"><input id="typed" placeholder="…o escriba su respuesta y presione Enter" disabled/></div>
+    <p class="hint">Consejo: si el micrófono falla, puede escribir. El flujo es idéntico.</p>
+
+    <details>
+      <summary>Ajustes de voz y micrófono</summary>
+      <div class="field">
+        <button id="miccheck" class="ghost" style="width:100%">🔧 Probar micrófono</button>
+      </div>
+      <div class="field">
+        <label>Voz del navegador (gratis)</label>
+        <select id="voicePick"></select>
+      </div>
+      <div class="field">
+        <label>Tiempo de espera antes de finalizar · <span id="pauseVal">5</span> s</label>
+        <input id="pause" type="range" min="2" max="15" step="1" value="5"/>
+        <p class="hint" style="margin-top:6px">Cuánto silencio espera el asistente antes de dar por terminada su respuesta.</p>
+      </div>
+      <div class="field">
+        <label>Velocidad · <span id="rateVal">0.95</span></label>
+        <input id="rate" type="range" min="0.7" max="1.2" step="0.05" value="0.95"/>
+      </div>
+      <div class="field">
+        <label>Tono · <span id="pitchVal">1.0</span></label>
+        <input id="pitch" type="range" min="0.7" max="1.3" step="0.05" value="1.0"/>
+      </div>
+      <div class="field"><button id="testVoice" class="ghost" style="width:100%">▶ Probar voz</button></div>
+      <div class="field" style="border-top:1px solid var(--line);padding-top:14px">
+        <label>ElevenLabs — voz natural (opcional)</label>
+        <p class="hint" style="margin:0 0 8px">Pegue su clave al momento de usarla. <strong>Nunca se guarda ni se sube a GitHub.</strong></p>
+        <input id="elKey" type="password" placeholder="ElevenLabs API key" style="margin-bottom:8px"/>
+        <input id="elVoice" placeholder="Voice ID" style="margin-bottom:10px"/>
+        <label style="font-weight:500;font-size:13.5px"><input id="elOn" type="checkbox" style="width:auto;margin-right:7px"/> Activar ElevenLabs</label>
+      </div>
+      <div id="diag"></div>
+    </details>
+  </div>
+
+  <!-- ============ TRANSCRIPT ============ -->
+  <div class="card">
+    <p class="eyebrow">Conversación</p>
+    <div id="transcript"><div class="empty">La conversación aparecerá aquí,<br/>en español con traducción al inglés.</div></div>
+  </div>
+
+  <!-- ============ RECORD ============ -->
+  <div class="card full">
+    <p class="eyebrow">Ficha de admisión — generada en vivo</p>
+    <div id="alert">⚠ Señal de alarma detectada — se requiere atención inmediata</div>
+    <div class="meta">
+      <span class="chip"><b>Especialidad</b> <span id="cat">—</span></span>
+      <span class="chip"><b>Prioridad</b> <span id="prio">—</span></span>
+    </div>
+    <table id="form"><tbody></tbody></table>
+
+    <div id="donePanel">
+      <div class="tick"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+      <h3>Conversación completa</h3>
+      <p>La admisión ha finalizado. Puede generar la transcripción con el registro de auditoría.</p>
+      <div class="btns" style="margin-top:4px">
+        <button id="genDoc">📄 Abrir informe clínico</button>
+        <button id="exportTxt" class="ghost">📋 Audit trail (.txt)</button>
+      </div>
+      <p style="font-size:12.5px;color:#047857;margin:14px 0 0;line-height:1.65">
+        El informe se abre en una pestaña nueva con opción de <b>descargar en PDF</b>.
+        Incluye la conversación bilingüe, el resumen para el médico, la referencia,
+        el registro de auditoría y los campos de firma.<br/>
+        <b>Este es el resumen sin firmar.</b> Un médico lo revisará y, una vez completada la
+        revisión, una versión actualizada y firmada estará disponible para descargar. Puede
+        seguir el estado de la revisión desde el ícono de notificaciones 🔔 arriba.
+      </p>
+    </div>
+    <p class="foot">Prototipo — datos sintéticos. Las reglas de triage son ilustrativas y no han sido validadas clínicamente.</p>
+  </div>
+</div>
+
+<script src="../js/theme.js"></script>
+<script src="../js/appointments-data.js"></script>
+<script src="../js/summary-extractor.js"></script>
+<script src="../js/reviews-store.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/user-menu.js"></script>
+<script src="../js/verbatim_ui.js"></script>
+</body>
+</html>

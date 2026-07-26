@@ -9,6 +9,23 @@ function formatTs(iso) {
     });
 }
 
+function signatureHtml(signature) {
+    if (!signature || signature.status === "UNSIGNED") {
+        return `<div class="summary-value" style="color:var(--muted)">UNSIGNED — awaiting physician review.</div>`;
+    }
+    return `
+        <table class="kv-table">
+            <tbody>
+                <tr><td class="k">Status</td><td class="v">${signature.status}</td></tr>
+                <tr><td class="k">Signer name</td><td class="v">${signature.signerName}</td></tr>
+                <tr><td class="k">Signer ID</td><td class="v">${signature.signerId}</td></tr>
+                <tr><td class="k">Date / time</td><td class="v">${formatTs(signature.signedAt)}</td></tr>
+                <tr><td class="k">Meaning of signature</td><td class="v">${signature.meaning}</td></tr>
+            </tbody>
+        </table>
+    `;
+}
+
 function renderNotFound() {
     $("body").innerHTML = `
         <div class="card not-found">
@@ -30,6 +47,20 @@ function renderDetail(appt) {
            </div>`
         : "";
 
+    const review = getReviewByAppointmentId(appt.id);
+    const reviewBanner = review && review.status !== "pending" ? `
+        <div class="decision-banner ${review.status}">
+            ${review.status === "approved" ? "✓ Physician approved this visit summary" : "✗ Physician requested follow-up on this visit summary"}
+            ${review.status === "rejected" && review.followUpMessage ? `
+                <div class="followup-note">"${review.followUpMessage}"</div>
+            ` : ""}
+        </div>
+    ` : (review && review.status === "pending" ? `
+        <div class="decision-banner" style="background:var(--warn-bg);color:var(--warn)">
+            ⏳ Awaiting physician review
+        </div>
+    ` : "");
+
     $("body").innerHTML = `
         <div class="detail-header">
             <div>
@@ -39,6 +70,8 @@ function renderDetail(appt) {
             </div>
             <span class="badge ${prio}">${prio}</span>
         </div>
+
+        ${reviewBanner}
 
         <div class="section-grid">
             <div class="card">
@@ -72,13 +105,16 @@ function renderDetail(appt) {
                         <tr><td class="k">Triage priority</td><td class="v"><span class="badge ${prio}">${prio}</span></td></tr>
                         <tr><td class="k">Emergency flag</td><td class="v">${a.emergencyFlag ? "YES — red flag detected" : "No"}</td></tr>
                         <tr><td class="k">Data classification</td><td class="v">${a.dataClassification}</td></tr>
-                        <tr><td class="k">Signature status</td><td class="v">${a.signatureStatus}</td></tr>
                     </tbody>
                 </table>
                 <div class="integrity-note">
-                    SHA-256 of record: ${a.recordSha256}<br>
-                    ${a.signatureNote}
+                    SHA-256 of record: ${a.recordSha256}
                 </div>
+            </div>
+
+            <div class="card">
+                <h2>Electronic Signature (21 CFR Part 11)</h2>
+                ${signatureHtml(review && review.signature)}
             </div>
 
             <div class="card">

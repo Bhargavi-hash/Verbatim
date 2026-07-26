@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../css/verbatim_voice.css">
 </head>
 <body>
-<header class="navbar">
+<header class="navbar" data-role="patient">
   <a class="navbar-brand" href="appointment.html">
     <span class="navbar-mark">V</span> Verbatim
   </a>
@@ -20,6 +20,10 @@
       <option value="es">Español</option>
       <option value="en">English</option>
     </select>
+    <span class="navbar-user">
+      <span class="avatar">MG</span>
+      <span>Maria Gonzalez</span>
+    </span>
     <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
   </div>
 </header>
@@ -68,6 +72,11 @@
 </div>
 
 <script src="../js/theme.js"></script>
+<script src="../js/appointments-data.js"></script>
+<script src="../js/summary-extractor.js"></script>
+<script src="../js/reviews-store.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/user-menu.js"></script>
 <script src="../js/verbatim_voice.js"></script>
 </body>
 </html>
