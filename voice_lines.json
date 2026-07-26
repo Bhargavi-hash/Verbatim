@@ -1,0 +1,276 @@
+{
+  "language": "es-ES",
+  "note": "Pre-rendered narration. ids are djb2 hashes of the normalised text; the app looks for audio/<id>.mp3",
+  "lines": [
+    {
+      "id": "40b423d1",
+      "text": "Hola. Soy Verbatim, su asistente de admisión médica. Voy a hacerle algunas preguntas para ayudar a preparar su consulta. ¿Cuál es el motivo principal de su visita hoy?",
+      "tag": "greeting"
+    },
+    {
+      "id": "51a7b367",
+      "text": "Gracias.",
+      "tag": "ack"
+    },
+    {
+      "id": "234187bd",
+      "text": "Entiendo.",
+      "tag": "ack"
+    },
+    {
+      "id": "fabd2512",
+      "text": "Ya casi terminamos.",
+      "tag": "ack"
+    },
+    {
+      "id": "963167ea",
+      "text": "Muy bien.",
+      "tag": "ack"
+    },
+    {
+      "id": "1be7fa87",
+      "text": "¿Ha notado silbidos en el pecho o tos junto con la falta de aire?",
+      "tag": "question"
+    },
+    {
+      "id": "1c75d2c6",
+      "text": "En una escala del cero al diez, donde diez es la peor dificultad para respirar imaginable, ¿qué tan intensa es ahora?",
+      "tag": "question"
+    },
+    {
+      "id": "24ccd86e",
+      "text": "¿Con qué frecuencia usa su inhalador de rescate en estos días?",
+      "tag": "question"
+    },
+    {
+      "id": "9c9728ba",
+      "text": "¿Ha tenido fiebre, dolor en el pecho o síntomas que no mejoran después del inhalador?",
+      "tag": "question"
+    },
+    {
+      "id": "f058431c",
+      "text": "¿Algo en su entorno ha cambiado recientemente, como polvo, humo, mascotas o un resfriado?",
+      "tag": "question"
+    },
+    {
+      "id": "85569aeb",
+      "text": "¿Esa presión se le quita cuando descansa?",
+      "tag": "question"
+    },
+    {
+      "id": "e7d9f0a2",
+      "text": "¿La molestia se le va al brazo, al cuello o a la mandíbula?",
+      "tag": "question"
+    },
+    {
+      "id": "2ccccc38",
+      "text": "En una escala del cero al diez, ¿qué tan intensa es la molestia cuando aparece?",
+      "tag": "question"
+    },
+    {
+      "id": "389004cb",
+      "text": "¿Ha tenido falta de aire, sudoración fría o náusea junto con la presión?",
+      "tag": "question"
+    },
+    {
+      "id": "4c89d92a",
+      "text": "¿Alguien en su familia ha tenido problemas del corazón?",
+      "tag": "question"
+    },
+    {
+      "id": "f55aee43",
+      "text": "¿Desde cuándo han aumentado en frecuencia?",
+      "tag": "question"
+    },
+    {
+      "id": "a19a3169",
+      "text": "¿Nota algo antes de que empiece el dolor, como luces, manchas o cambios en la vista?",
+      "tag": "question"
+    },
+    {
+      "id": "0e38d325",
+      "text": "En una escala del cero al diez, ¿qué tan fuerte es el dolor cuando está en su peor momento?",
+      "tag": "question"
+    },
+    {
+      "id": "a027c28e",
+      "text": "¿Le molesta la luz o el ruido durante el dolor? ¿Ha tenido náusea o vómito?",
+      "tag": "question"
+    },
+    {
+      "id": "b193cf04",
+      "text": "¿Ha tenido debilidad en la cara, el brazo o la pierna, o dificultad para hablar durante estos episodios?",
+      "tag": "question"
+    },
+    {
+      "id": "e4c0589d",
+      "text": "¿Ha sido este el peor dolor de cabeza de su vida, o empezó de forma muy repentina?",
+      "tag": "question"
+    },
+    {
+      "id": "0bacf5a7",
+      "text": "¿En qué momento le molesta más?",
+      "tag": "question"
+    },
+    {
+      "id": "d92a1c87",
+      "text": "En una escala del cero al diez, ¿qué tan fuerte es el ardor cuando está peor?",
+      "tag": "question"
+    },
+    {
+      "id": "7aab3d67",
+      "text": "¿Ha vomitado? ¿Ha visto sangre en el vómito o en las heces?",
+      "tag": "question"
+    },
+    {
+      "id": "2126766e",
+      "text": "¿Ha tenido dificultad para tragar, o ha bajado de peso sin proponérselo?",
+      "tag": "question"
+    },
+    {
+      "id": "d3070554",
+      "text": "¿Ha tomado algo para el ardor?",
+      "tag": "question"
+    },
+    {
+      "id": "e7cb8c12",
+      "text": "¿Cómo pasó exactamente? ¿Qué estaba haciendo en ese momento?",
+      "tag": "question"
+    },
+    {
+      "id": "ac5172ac",
+      "text": "¿Se le hinchó? ¿Qué tan pronto después de la lesión?",
+      "tag": "question"
+    },
+    {
+      "id": "4bb1411b",
+      "text": "En una escala del cero al diez, ¿qué tan fuerte es el dolor ahora?",
+      "tag": "question"
+    },
+    {
+      "id": "35a4922f",
+      "text": "¿Puede mover esa parte y apoyar el peso?",
+      "tag": "question"
+    },
+    {
+      "id": "eed17306",
+      "text": "¿Se le ha quedado trabada, o siente que algo se atora al moverla?",
+      "tag": "question"
+    },
+    {
+      "id": "ac576def",
+      "text": "¿Ha notado que se le duerma o que pierda sensibilidad?",
+      "tag": "question"
+    },
+    {
+      "id": "de5a8218",
+      "text": "¿Qué tan alta ha estado la fiebre?",
+      "tag": "question"
+    },
+    {
+      "id": "161899aa",
+      "text": "¿Ha tenido sudores por la noche o escalofríos?",
+      "tag": "question"
+    },
+    {
+      "id": "615ba501",
+      "text": "¿Ha bajado de peso sin proponérselo?",
+      "tag": "question"
+    },
+    {
+      "id": "56ed75c2",
+      "text": "¿Ha viajado recientemente?",
+      "tag": "question"
+    },
+    {
+      "id": "d3d062db",
+      "text": "¿Recuerda si le picó algún insecto, o si tomó leche o agua sin hervir?",
+      "tag": "question"
+    },
+    {
+      "id": "dfd78df7",
+      "text": "¿Ha tenido tos, dificultad para respirar, diarrea o dolor al orinar?",
+      "tag": "question"
+    },
+    {
+      "id": "d5232ef9",
+      "text": "¿Ha estado cerca de alguien enfermo, o tiene alguna condición que le baje las defensas?",
+      "tag": "question"
+    },
+    {
+      "id": "8d7ac203",
+      "text": "¿Cuándo empezó?",
+      "tag": "question"
+    },
+    {
+      "id": "593bd0ae",
+      "text": "¿Cuánto le ha durado?",
+      "tag": "question"
+    },
+    {
+      "id": "876b4851",
+      "text": "En una escala del cero al diez, ¿qué tan fuerte o molesto es?",
+      "tag": "question"
+    },
+    {
+      "id": "d1ebe258",
+      "text": "¿Ha notado algo más junto con eso?",
+      "tag": "question"
+    },
+    {
+      "id": "2999a849",
+      "text": "¿Está tomando algún medicamento actualmente?",
+      "tag": "question"
+    },
+    {
+      "id": "9e6ac23b",
+      "text": "¿Tiene alguna alergia a medicamentos?",
+      "tag": "question"
+    },
+    {
+      "id": "c729b86c",
+      "text": "Gracias por decírmelo. Voy a avisarle a su equipo médico ahora mismo para que le atiendan de inmediato. Quédese aquí conmigo.",
+      "tag": "red_flag"
+    },
+    {
+      "id": "97b08724",
+      "text": "Permítame confirmar que entendí correctamente.",
+      "tag": "readback_opener"
+    },
+    {
+      "id": "b586a57d",
+      "text": "Gracias. He preparado un resumen para su médico. Con base en los síntomas que ha informado, su médico recomienda una evaluación con un neumólogo. Nuestro personal le ayudará a programar la cita.",
+      "tag": "closing"
+    },
+    {
+      "id": "904a7653",
+      "text": "Gracias. He preparado un resumen para su médico. Con base en los síntomas que ha informado, su médico recomienda una evaluación con un cardiólogo. Nuestro personal le ayudará a programar la cita.",
+      "tag": "closing"
+    },
+    {
+      "id": "cc59e802",
+      "text": "Gracias. He preparado un resumen para su médico. Con base en los síntomas que ha informado, su médico recomienda una evaluación con un neurólogo. Nuestro personal le ayudará a programar la cita.",
+      "tag": "closing"
+    },
+    {
+      "id": "a80497fa",
+      "text": "Gracias. He preparado un resumen para su médico. Con base en los síntomas que ha informado, su médico recomienda una evaluación con un gastroenterólogo. Nuestro personal le ayudará a programar la cita.",
+      "tag": "closing"
+    },
+    {
+      "id": "aba939ae",
+      "text": "Gracias. He preparado un resumen para su médico. Con base en los síntomas que ha informado, su médico recomienda una evaluación con un ortopedista. Nuestro personal le ayudará a programar la cita.",
+      "tag": "closing"
+    },
+    {
+      "id": "954302b0",
+      "text": "Gracias. He preparado un resumen para su médico. Con base en los síntomas que ha informado, su médico recomienda una evaluación con un especialista en enfermedades infecciosas. Nuestro personal le ayudará a programar la cita.",
+      "tag": "closing"
+    },
+    {
+      "id": "a8a2803f",
+      "text": "Gracias. He preparado un resumen para su médico. Con base en los síntomas que ha informado, su médico recomienda una evaluación con su médico de cabecera. Nuestro personal le ayudará a programar la cita.",
+      "tag": "closing"
+    }
+  ]
+}

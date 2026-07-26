@@ -1,113 +1,93 @@
-# Verbatim Voice Avatar — How to Run It
+# Verbatim — How to Run
 
-You don't need ElevenLabs, an API key, or any credits for this. Every browser
-already has speech-to-text and text-to-speech built in. This uses those.
-
----
-
-## The three pieces (what you're actually building)
-
-Any voice assistant is these three things in a loop:
-
-| Piece | What it does | What we use |
-|---|---|---|
-| **1. Ears (STT)** | Turns the patient's speech into text | Browser Web Speech API — free |
-| **2. Brain** | Decides what to ask next | Rule-based engine using your intake templates |
-| **3. Mouth (TTS)** | Speaks the response out loud | Browser SpeechSynthesis — free |
-
-ElevenLabs bundles all three and charges credits. We're using the free parts your
-browser already ships with. The trade-off: the voice is more robotic. Everything
-else works the same.
-
-**Why the "brain" is rules and not an LLM:** for structured intake, the questions
-are already determined by the condition category. You don't need a model to decide
-what to ask next — you need it to *classify the opening complaint*, and keyword
-matching handles that well enough to demo. Fewer moving parts, nothing to time out
-on stage, no cost.
+`verbatim_ui.html` is the app. One file, no build step, no server-side code.
 
 ---
 
-## Run it — 3 steps
+## Run it
 
-### Step 1 — Put the file somewhere you can find it
-`verbatim_voice.html` is the whole app. One file. Nothing to install.
-
-### Step 2 — Start a tiny local web server
-The microphone will NOT work if you just double-click the file. Browsers block mic
-access on `file://` for security. You need `localhost`. Open Terminal and run:
+The microphone will **not** work if you double-click the file — browsers block mic
+access on `file://`. You need `localhost` or `https`.
 
 ```bash
-cd /path/to/the/folder/with/the/file
+cd app
 python3 -m http.server 8000
 ```
 
-(If that errors, try `python -m http.server 8000`.)
+Open **http://localhost:8000/verbatim_ui.html** in Chrome.
 
-### Step 3 — Open it in Chrome
-Go to: **http://localhost:8000/verbatim_voice.html**
+Or just use the GitHub Pages URL, which is `https` and therefore works directly.
 
-Click **Empezar**. The avatar greets you in Spanish. Click **🎤 Hablar** and answer.
-Chrome will ask permission for the microphone — click Allow.
-
-> **No microphone, or it's being difficult?** Type your answers into the text box
-> instead and press Enter. The flow is identical — you can demo the whole thing
-> without a mic. Have this as your backup.
+> No microphone? Type answers into the box instead — the flow is identical.
+> Click **🔧 Probar micrófono** for a diagnosis if it misbehaves.
 
 ---
 
-## What to say to see it work
+## What it does
 
-Try this exact sequence to see condition routing AND the red flag:
-
-1. **"Me duele mucho el pecho"** → routes to CARDIAC, asks cardiac questions
-2. Answer a couple of questions normally
-3. **"El dolor se me va al brazo izquierdo"** → red flag fires, EMERGENT alert
-
-Then hit **Reiniciar** and try a completely different one:
-
-1. **"Me torcí el tobillo cuando me caí"** → routes to MSK_INJURY
-
-Watch the form on the bottom change shape between the two runs — different
-questions, different fields, different priority. **That side-by-side is your demo.**
-
-Also try: `"Tengo fiebre desde ayer"` (INFECTION), `"No puedo respirar bien"`
-(RESPIRATORY), `"Me duele el estómago"` (GI).
-
----
-
-## The detail worth pointing at in your pitch
-
-When you answer the medications question with something like
-**"Tomo lisinopril para la presión"**, watch the form add:
-
-> Hipertensión (deducida del medicamento) — *(inferido)*
-
-Marked in orange, labeled inferred. The patient never said "I have hypertension" —
-the system worked it out from the medication, **and it tells you so.** That's your
-fidelity story, running live.
+1. **Speak naturally.** The patient says why they came, in Spanish.
+2. **Automatic specialty routing.** The opening complaint selects one of seven
+   question sets — pulmonology, cardiology, neurology, gastroenterology,
+   orthopedics, infectious disease, or general medicine. Different complaint,
+   different questions.
+3. **Red-flag detection with negation handling.** "No es el peor dolor de cabeza
+   de mi vida" does *not* escalate; "se me va al brazo izquierdo" does.
+4. **Answer validation.** Each response is checked against the form expected for
+   that question (a 0–10 rating, a yes/no, a duration) and against transcription
+   quality. Mismatches are flagged for the patient to correct.
+5. **Correction without restarting.** Click any patient response to edit it, or
+   press 🎤 Regrabar to say it again. Corrections re-evaluate safety and can
+   re-route the questions.
+6. **Read-back confirmation**, then a formatted clinical report.
 
 ---
 
-## How this fits the rest of the project
+## Outputs
 
-This is a working fallback for the `voice_agent` module. Two ways to use it:
+| Button | What you get |
+|---|---|
+| **📄 Abrir informe clínico** | Opens a formatted report in a new tab, with a **Download PDF** button (uses the browser print dialog). Marked **UNSIGNED** pending physician review, with signature fields. |
+| **📋 Audit trail (.txt)** | Plain-text ALCOA+ audit trail. |
 
-- **Plan A:** ElevenLabs Conversational AI (better voice, uses credits)
-- **Plan B:** this (free, always works, never fails on stage)
-
-Smart move: build with Plan B so you're not burning credits every test run, then
-swap in ElevenLabs for the final demo if credits and time allow. Keep this file
-deployed as your safety net either way.
-
-To connect it to the rest of the pipeline, the conversation state object
-(`state.turns` and `state.data`) is exactly the shape your `structurer` module
-expects — transcript plus filled fields.
+Both include the bilingual conversation, physician summary, referral, flagged
+responses, text edits with before/after, field-level traceability, and a SHA-256
+record hash.
 
 ---
 
-## Honest limitation for the README
+## Files
 
-> The conversation engine uses keyword-based condition routing and red-flag
-> detection. This is a one-day prototype: the keyword lists are illustrative,
-> not clinically validated, and would miss phrasings a real system must catch.
-> Production would require an LLM classifier plus clinician-reviewed triage rules.
+| File | Purpose |
+|---|---|
+| `verbatim_ui.html` | The whole app |
+| `avatar_female.png` | Dra. Elena (must sit beside the HTML) |
+| `voice_lines.json` | The 54 fixed narration lines |
+| `tools/generate_voice.py` | One-time script to pre-render narration audio |
+| `audio/*.mp3` | Pre-rendered narration (optional — see VOICE_SETUP.md) |
+
+---
+
+## Voice quality
+
+Browser speech varies by machine. To make the voice sound identical everywhere,
+pre-render the narration once with ElevenLabs and commit the audio — see
+**VOICE_SETUP.md**. The app falls back to browser speech if `audio/` is absent.
+
+---
+
+## Try this in the demo
+
+- `"Tengo asma y me cuesta respirar por la noche"` → routes to **pulmonology**
+- `"Me torcí el tobillo"` → routes to **orthopedics** (watch the form change shape)
+- Say something the mic will mangle → watch it get **flagged for review**
+- Answer the medication question with `"Tomo lisinopril"` → an **inferred**
+  condition appears, tagged as not stated by the patient
+
+---
+
+## Honest limitations
+
+- Synthetic/test data only. Not a HIPAA-compliant deployment.
+- Triage routing and red-flag rules are illustrative and **not clinically validated**.
+- English is a machine translation of a Spanish authoritative record; low-confidence
+  translations are labelled with a coverage score.
