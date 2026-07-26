@@ -1,0 +1,137 @@
+.detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.detail-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.5rem;
+  color: var(--navy);
+}
+
+body.dark .detail-header h1 {
+  color: var(--text);
+}
+
+.detail-sub {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal);
+  text-decoration: none;
+  margin-bottom: 18px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.section-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+
+.kv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.kv-table td {
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.kv-table tr:last-child td {
+  border-bottom: none;
+}
+
+.kv-table td.k {
+  color: var(--muted);
+  width: 46%;
+}
+
+.kv-table td.v {
+  font-weight: 600;
+}
+
+.integrity-note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.rx-list {
+  margin: 4px 0 0 18px;
+  font-size: 14px;
+}
+
+.detail-section + .detail-section {
+  margin-top: 16px;
+}
+
+.detail-section .info-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.transcript {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.turn {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.turn:last-child {
+  border-bottom: none;
+}
+
+.turn .who {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.turn.patient .who {
+  color: var(--teal);
+}
+
+.turn .text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.not-found {
+  text-align: center;
+  padding: 40px 20px;
+}
