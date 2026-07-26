@@ -2,15 +2,11 @@
 """
 Verbatim — pre-render the assistant's narration to audio files.
 
-Run this ONCE. It reads frontend/pages/voice_lines.json, calls ElevenLabs,
-and writes frontend/pages/audio/<id>.mp3 for every line — that's where
-verbatim_ui.html looks for clips (it fetches "audio/<id>.mp3" relative to
-its own location). Commit the audio/ folder to the repo.
+Run this ONCE. It reads voice_lines.json, calls ElevenLabs, and writes
+audio/<id>.mp3 for every line. Commit the audio/ folder to the repo.
 
 After that the app sounds identical on every machine — no API key needed
-by anyone who opens it, and nothing to fail live on stage. If a clip is
-missing, verbatim_ui.js falls back to live ElevenLabs (if configured) and
-then to the browser's built-in speech synthesis, so this step is optional.
+by anyone who opens it, and nothing to fail live on stage.
 
 Usage:
     export ELEVENLABS_API_KEY=sk_...
@@ -25,18 +21,15 @@ API_KEY  = os.environ.get("ELEVENLABS_API_KEY")
 VOICE_ID = os.environ.get("ELEVENLABS_VOICE_ID")
 MODEL    = os.environ.get("ELEVENLABS_MODEL", "eleven_multilingual_v2")
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGES_DIR = os.path.join(REPO_ROOT, "frontend", "pages")
-LINES = os.path.join(PAGES_DIR, "voice_lines.json")
-OUT   = os.path.join(PAGES_DIR, "audio")
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+LINES = os.path.join(HERE, "voice_lines.json")
+OUT   = os.path.join(HERE, "audio")
 
 def die(msg):
     print("ERROR: " + msg); sys.exit(1)
 
 if not API_KEY:  die("set ELEVENLABS_API_KEY")
 if not VOICE_ID: die("set ELEVENLABS_VOICE_ID (copy it from your ElevenLabs voice library)")
-if not os.path.exists(LINES):
-    die(f"no {LINES} found — create it first (see frontend/js/verbatim_ui.js for the lineId() hash used to key each entry)")
 
 with open(LINES, encoding="utf-8") as f:
     data = json.load(f)
