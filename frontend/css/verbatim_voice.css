@@ -1,15 +1,10 @@
-:root{--navy:#0f2942;--teal:#1a7a8c;--bg:#f4f7f9;--card:#fff;--line:#dfe6ec;
-      --alert:#c0392b;--warn:#d68910;--ok:#1e8449;--muted:#6b7c8c;}
-*{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-     background:var(--bg);color:var(--navy);}
-header{background:var(--navy);color:#fff;padding:14px 20px;display:flex;
-       align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-header h1{margin:0;font-size:18px;letter-spacing:.5px}
-header span{font-size:12px;opacity:.75}
+.intro{max-width:1200px;margin:0 auto;padding:20px 16px 0}
+.intro h1{margin:0 0 4px;font-size:20px;color:var(--navy)}
+body.dark .intro h1{color:var(--text)}
+.intro p{margin:0;color:var(--muted);font-size:13px}
+
 .wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px;max-width:1200px;margin:0 auto}
 @media(max-width:860px){.wrap{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
 .card h2{margin:0 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
 #avatar{width:96px;height:96px;border-radius:50%;background:var(--teal);margin:0 auto 12px;
         display:flex;align-items:center;justify-content:center;transition:transform .15s}
@@ -18,27 +13,25 @@ header span{font-size:12px;opacity:.75}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 #avatar svg{width:44px;height:44px;fill:#fff}
 #status{text-align:center;font-size:13px;color:var(--muted);min-height:18px;margin-bottom:12px}
-#bubble{background:#eaf4f6;border-left:3px solid var(--teal);padding:12px;border-radius:6px;
+#bubble{background:var(--ok-bg);border-left:3px solid var(--teal);padding:12px;border-radius:6px;
         font-size:16px;line-height:1.5;min-height:60px}
+body.dark #bubble{background:rgba(26,122,140,0.16)}
 .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 button{flex:1;min-width:120px;padding:11px 14px;border:0;border-radius:7px;font-size:14px;
        font-weight:600;cursor:pointer;background:var(--teal);color:#fff}
-button.secondary{background:#e6ecf1;color:var(--navy)}
+button.secondary{background:var(--line);color:var(--navy)}
+body.dark button.secondary{color:var(--text)}
 button:disabled{opacity:.45;cursor:not-allowed}
-#typed{width:100%;padding:10px;border:1px solid var(--line);border-radius:7px;font-size:14px;margin-top:8px}
+#typed{width:100%;padding:10px;border:1px solid var(--line);border-radius:7px;font-size:14px;margin-top:8px;
+       background:var(--card);color:var(--text)}
 #transcript{max-height:260px;overflow-y:auto;font-size:14px}
-.turn{padding:7px 0;border-bottom:1px solid #f0f4f7}
+.turn{padding:7px 0;border-bottom:1px solid var(--line)}
 .turn .who{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
 .turn.patient .who{color:var(--teal)}
 table{width:100%;border-collapse:collapse;font-size:13px}
-td{padding:6px 4px;border-bottom:1px solid #f0f4f7;vertical-align:top}
+td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
 td.k{color:var(--muted);width:42%}
-.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;
-       font-weight:700;letter-spacing:.5px}
-.EMERGENT{background:#fdecea;color:var(--alert)}
-.URGENT{background:#fdf3e2;color:var(--warn)}
-.ROUTINE{background:#eaf6ee;color:var(--ok)}
-#alert{display:none;background:#fdecea;border:1px solid var(--alert);color:var(--alert);
+#alert{display:none;background:var(--alert-bg);border:1px solid var(--alert);color:var(--alert);
        padding:12px;border-radius:8px;font-weight:700;margin-bottom:12px}
 .inferred{color:var(--warn);font-size:11px;font-style:italic}
 .note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5}

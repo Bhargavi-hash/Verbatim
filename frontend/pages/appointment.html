@@ -4,20 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Appointments</title>
+    <title>Appointments · Verbatim</title>
+    <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/appointment.css">
 </head>
 
 <body>
-    <div class="theme-toggle">
-        <button id="themeButton" type="button" aria-label="Toggle dark mode">
-            🌙
-        </button>
-    </div>
+    <header class="navbar">
+        <a class="navbar-brand" href="appointment.html">
+            <span class="navbar-mark">V</span> Verbatim
+        </a>
+        <nav class="navbar-links">
+            <a class="navbar-link active" href="appointment.html">Appointments</a>
+        </nav>
+        <div class="navbar-actions">
+            <span class="navbar-user">
+                <span class="avatar">MG</span>
+                <span>Maria Gonzalez</span>
+            </span>
+            <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
+        </div>
+    </header>
 
-    <main class="container">
-        <h1>Appointment</h1>
-        <p class="subtitle">View and manage your appointments</p>
+    <main class="page-content">
+        <div class="page-header">
+            <h1>Appointments</h1>
+            <p>View upcoming visits, review past intake records, and manage your profile.</p>
+        </div>
 
         <div class="tabs" role="tablist">
             <button
@@ -39,50 +52,25 @@
             >
                 Past
             </button>
+
+            <button
+                class="tab-button"
+                type="button"
+                data-tab="profile"
+                role="tab"
+                aria-selected="false"
+            >
+                Profile
+            </button>
         </div>
 
-        <section id="upcoming" class="tab-content active">
-            <article class="appointment">
-                <div class="appointment-info">
-                    <div class="doctor">Dr Peter Pan</div>
-                    <div class="location">Sky Hospital</div>
-                </div>
-
-                <button class="start-button" type="button">
-                    Start Intake
-                </button>
-            </article>
-
-            <article class="appointment">
-                <div class="appointment-info">
-                    <div class="doctor">Dr Stephen King</div>
-                    <div class="location">Healthcare Clinic</div>
-                </div>
-
-                <button class="start-button" type="button">
-                    Start Intake
-                </button>
-            </article>
-        </section>
-
-        <section id="past" class="tab-content">
-            <article class="appointment past-record">
-                <div class="appointment-info">
-                    <div class="doctor">Dr Alex Sachin</div>
-                    <div class="location">Palo Alto Care</div>
-                    <div class="date">3:00 PM · July 21, 2026</div>
-                </div>
-            </article>
-
-            <article class="appointment past-record">
-                <div class="appointment-info">
-                    <div class="doctor">Dr Lily Blooms</div>
-                    <div class="date">11:00 AM · July 24, 2026</div>
-                </div>
-            </article>
-        </section>
+        <section id="upcoming" class="tab-content active"></section>
+        <section id="past" class="tab-content"></section>
+        <section id="profile" class="tab-content"></section>
     </main>
 
+    <script src="../js/theme.js"></script>
+    <script src="../js/appointments-data.js"></script>
     <script src="../js/appointment.js"></script>
 </body>
 </html>

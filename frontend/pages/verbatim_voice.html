@@ -4,52 +4,70 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Verbatim — Intake Avatar</title>
+<link rel="stylesheet" href="../css/common.css">
 <link rel="stylesheet" href="../css/verbatim_voice.css">
 </head>
 <body>
-<header>
-  <h1>VERBATIM · Admisión / Intake</h1>
-  <span>Browser speech — no API key required</span>
+<header class="navbar">
+  <a class="navbar-brand" href="appointment.html">
+    <span class="navbar-mark">V</span> Verbatim
+  </a>
+  <nav class="navbar-links">
+    <a class="navbar-link" href="appointment.html">← Appointments</a>
+  </nav>
+  <div class="navbar-actions">
+    <select id="langSelect" class="navbar-select" aria-label="Idioma / Language">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+    <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
+  </div>
 </header>
+
+<div class="intro">
+  <h1 data-i18n="headerTitle">VERBATIM · Admisión / Intake</h1>
+  <p data-i18n="headerSubtitle">Browser speech — no API key required</p>
+</div>
 
 <div class="wrap">
   <div class="card">
-    <h2>Asistente</h2>
+    <h2 data-i18n="cardAssistant">Asistente</h2>
     <div id="avatar"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.9V21h2v-3.1A7 7 0 0019 11h-2z"/></svg></div>
-    <div id="status">Listo para empezar</div>
-    <div id="bubble">Presione «Empezar» para comenzar la admisión.</div>
+    <div id="status" data-i18n="statusReady">Listo para empezar</div>
+    <div id="bubble" data-i18n="bubbleIntro">Presione «Empezar» para comenzar la admisión.</div>
     <div class="btns">
-      <button id="start">Empezar</button>
-      <button id="speak" class="secondary" disabled>🎤 Hablar</button>
-      <button id="reset" class="secondary">Reiniciar</button>
+      <button id="start" data-i18n="btnStart">Empezar</button>
+      <button id="speak" class="secondary" disabled data-i18n="btnSpeak">🎤 Hablar</button>
+      <button id="reset" class="secondary" data-i18n="btnReset">Reiniciar</button>
     </div>
-    <input id="typed" placeholder="…o escriba la respuesta aquí y presione Enter" disabled/>
-    <div class="note">Tip: si el micrófono no funciona, escriba las respuestas. El flujo es idéntico.</div>
-    <div id="diag" class="note" style="background:#f7fafc;border:1px solid var(--line);border-radius:6px;padding:8px;margin-top:8px;white-space:pre-line"></div>
-    <button id="miccheck" class="secondary" style="margin-top:8px">🔧 Probar micrófono</button>
+    <input id="typed" data-i18n-placeholder="typedPlaceholder" placeholder="…o escriba la respuesta aquí y presione Enter" disabled/>
+    <div class="note" data-i18n="tipNote">Tip: si el micrófono no funciona, escriba las respuestas. El flujo es idéntico.</div>
+    <div id="diag" class="note" style="background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;margin-top:8px;white-space:pre-line"></div>
+    <button id="miccheck" class="secondary" style="margin-top:8px" data-i18n="btnMicCheck">🔧 Probar micrófono</button>
   </div>
 
   <div class="card">
-    <h2>Conversación</h2>
+    <h2 data-i18n="cardConversation">Conversación</h2>
     <div id="transcript"></div>
   </div>
 
   <div class="card" style="grid-column:1/-1">
-    <h2>Ficha de admisión — generada en vivo</h2>
-    <div id="alert">⚠ SEÑAL DE ALARMA DETECTADA — atención inmediata</div>
+    <h2 data-i18n="cardIntakeForm">Ficha de admisión — generada en vivo</h2>
+    <div id="alert" data-i18n="alertRedFlag">⚠ SEÑAL DE ALARMA DETECTADA — atención inmediata</div>
     <div style="margin-bottom:10px">
-      <strong>Categoría:</strong> <span id="cat">—</span> &nbsp;·&nbsp;
-      <strong>Prioridad:</strong> <span id="prio">—</span>
+      <strong data-i18n="labelCategory">Categoría:</strong> <span id="cat">—</span> &nbsp;·&nbsp;
+      <strong data-i18n="labelPriority">Prioridad:</strong> <span id="prio">—</span>
     </div>
     <table id="form"><tbody></tbody></table>
     <div class="btns" style="margin-top:14px">
-      <button id="exportTxt" class="secondary" disabled>⬇ Descargar audit trail (.txt)</button>
-      <button id="exportJson" class="secondary" disabled>⬇ Descargar registro (.json)</button>
+      <button id="exportTxt" class="secondary" disabled data-i18n="btnExportTxt">⬇ Descargar audit trail (.txt)</button>
+      <button id="exportJson" class="secondary" disabled data-i18n="btnExportJson">⬇ Descargar registro (.json)</button>
     </div>
-    <div class="note">Prototipo. Las reglas de triage son ilustrativas y no han sido validadas clínicamente.</div>
+    <div class="note" data-i18n="prototypeNote">Prototipo. Las reglas de triage son ilustrativas y no han sido validadas clínicamente.</div>
   </div>
 </div>
 
+<script src="../js/theme.js"></script>
 <script src="../js/verbatim_voice.js"></script>
 </body>
 </html>
