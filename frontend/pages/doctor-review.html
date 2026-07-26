@@ -4,31 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Visit Details · Verbatim</title>
+    <title>Physician Summary · Verbatim</title>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/appointment-detail.css">
     <link rel="stylesheet" href="../css/doctor.css">
 </head>
 
 <body>
-    <header class="navbar" data-role="patient">
-        <a class="navbar-brand" href="appointment.html">
+    <header class="navbar" data-role="doctor">
+        <a class="navbar-brand" href="doctor-dashboard.html">
             <span class="navbar-mark">V</span> Verbatim
         </a>
         <nav class="navbar-links">
-            <a class="navbar-link active" href="appointment.html">Appointments</a>
+            <a class="navbar-link active" href="doctor-dashboard.html">Review Queue</a>
         </nav>
         <div class="navbar-actions">
             <span class="navbar-user">
-                <span class="avatar">MG</span>
-                <span>Maria Gonzalez</span>
+                <span class="avatar" id="doctorInitials"></span>
+                <span id="doctorName"></span>
             </span>
             <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
         </div>
     </header>
 
     <main class="page-content">
-        <a class="back-link" href="appointment.html">← Back to appointments</a>
+        <a class="back-link" href="doctor-dashboard.html">← Back to review queue</a>
         <div id="body"></div>
     </main>
 
@@ -36,8 +36,7 @@
     <script src="../js/appointments-data.js"></script>
     <script src="../js/summary-extractor.js"></script>
     <script src="../js/reviews-store.js"></script>
-    <script src="../js/notifications.js"></script>
+    <script src="../js/doctor-review.js"></script>
     <script src="../js/user-menu.js"></script>
-    <script src="../js/appointment-detail.js"></script>
 </body>
 </html>

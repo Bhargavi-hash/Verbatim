@@ -30,7 +30,7 @@ on stage, no cost.
 ## Run it — 3 steps
 
 ### Step 1 — Find the file
-`frontend/pages/verbatim_voice.html` is the whole app. Its CSS and JS live
+`frontend/pages/verbatim_ui.html` is the intake app. Its CSS and JS live
 alongside it in `frontend/css/` and `frontend/js/`. Nothing to install.
 
 ### Step 2 — Start a tiny local web server
@@ -47,13 +47,18 @@ python3 -m http.server 8000
 ### Step 3 — Open it in Chrome
 Go to: **http://localhost:8000/frontend/pages/login.html**
 
-Sign in with anything (it's a dummy login, no real auth) and it forwards you to
+Sign in as **Patient** (it's a dummy login, no real auth) and it forwards you to
 the appointments list. Click **Start Intake** on any appointment to land on
-**verbatim_voice.html**. You can also open any of the three pages directly if
-you want to skip ahead:
-- `frontend/pages/login.html` → dummy sign-in
+**verbatim_ui.html**. You can also open any of the pages directly if you want
+to skip ahead:
+- `frontend/pages/login.html` → dummy sign-in (Patient or Doctor)
 - `frontend/pages/appointment.html` → appointment list, "Start Intake" button
-- `frontend/pages/verbatim_voice.html` → the voice intake app itself
+- `frontend/pages/verbatim_ui.html` → the voice intake app itself
+- `frontend/pages/doctor-dashboard.html` → the doctor's review queue (sign in as Doctor)
+
+Completing an intake sends it to the doctor's review queue automatically —
+sign in as Doctor in a second tab to approve/reject it and see the signed
+result show up back on the patient's appointment page.
 
 Click **Empezar**. The avatar greets you in Spanish. Click **🎤 Hablar** and answer.
 Chrome will ask permission for the microphone — click Allow.

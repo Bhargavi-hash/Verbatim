@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Review Queue · Verbatim</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/appointment.css">
+    <link rel="stylesheet" href="../css/doctor.css">
+</head>
+
+<body>
+    <header class="navbar" data-role="doctor">
+        <a class="navbar-brand" href="doctor-dashboard.html">
+            <span class="navbar-mark">V</span> Verbatim
+        </a>
+        <nav class="navbar-links">
+            <a class="navbar-link active" href="doctor-dashboard.html">Review Queue</a>
+        </nav>
+        <div class="navbar-actions">
+            <span class="navbar-user">
+                <span class="avatar" id="doctorInitials"></span>
+                <span id="doctorName"></span>
+            </span>
+            <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="page-header">
+            <h1>Review Queue</h1>
+            <p>Physician summaries extracted from patient intake sessions, awaiting your review.</p>
+        </div>
+
+        <div class="tabs" role="tablist">
+            <button class="tab-button active" type="button" data-tab="pending" role="tab" aria-selected="true">Pending</button>
+            <button class="tab-button" type="button" data-tab="approved" role="tab" aria-selected="false">Approved</button>
+            <button class="tab-button" type="button" data-tab="rejected" role="tab" aria-selected="false">Rejected</button>
+        </div>
+
+        <section id="pending" class="tab-content active"></section>
+        <section id="approved" class="tab-content"></section>
+        <section id="rejected" class="tab-content"></section>
+    </main>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/appointments-data.js"></script>
+    <script src="../js/summary-extractor.js"></script>
+    <script src="../js/reviews-store.js"></script>
+    <script src="../js/doctor-dashboard.js"></script>
+    <script src="../js/user-menu.js"></script>
+</body>
+</html>

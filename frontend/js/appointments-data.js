@@ -4,6 +4,7 @@
 
 const PROFILE = {
   name: "Maria Gonzalez",
+  userId: "USR-001",
   initials: "MG",
   dob: "04/12/1985",
   age: 41,
@@ -14,6 +15,13 @@ const PROFILE = {
   insurance: "Central Coast Health Plan · Member ID CCP-88213",
   preferredLanguage: "Spanish",
   emergencyContact: "Juan Gonzalez (Spouse) · (805) 555-0199"
+};
+
+const DOCTOR_PROFILE = {
+  name: "Dr. Jordan Rivera",
+  id: "MD-4471",
+  initials: "JR",
+  role: "Attending Physician — Review Queue"
 };
 
 const UPCOMING_APPOINTMENTS = [
@@ -87,17 +95,17 @@ const PAST_APPOINTMENTS = [
       { who: "agent", text: "Gracias. Ya tengo lo que necesita su equipo médico. Toda esta información va para ellos y alguien vendrá a verle." }
     ],
     fields: [
-      { label: "Motivo de consulta", value: "Me duele mucho el pecho.", statedByPatient: true },
-      { label: "Carácter del dolor", value: "Es como una presión fuerte.", statedByPatient: true },
-      { label: "Irradiación", value: "No, se queda en el pecho.", statedByPatient: true },
-      { label: "Severidad (0-10)", value: "Un siete.", statedByPatient: true },
-      { label: "Síntomas asociados", value: "Un poco de náusea, nada más.", statedByPatient: true },
-      { label: "Relación con esfuerzo", value: "Estaba subiendo escaleras.", statedByPatient: true },
-      { label: "Historia cardíaca", value: "No, primera vez.", statedByPatient: true },
-      { label: "Medicamentos", value: "Tomo lisinopril para la presión.", statedByPatient: true },
-      { label: "Hipertensión inferida", value: "Hipertensión (deducida del medicamento)", statedByPatient: false },
-      { label: "Alergias", value: "Ninguna que yo sepa.", statedByPatient: true },
-      { label: "Antecedentes", value: "Solo la presión alta.", statedByPatient: true }
+      { field: "chief_complaint", label: "Motivo de consulta", value: "Me duele mucho el pecho.", statedByPatient: true },
+      { field: "pain_character", label: "Carácter del dolor", value: "Es como una presión fuerte.", statedByPatient: true },
+      { field: "radiation", label: "Irradiación", value: "No, se queda en el pecho.", statedByPatient: true },
+      { field: "severity_0_10", label: "Severidad (0-10)", value: "Un siete.", statedByPatient: true },
+      { field: "associated_symptoms", label: "Síntomas asociados", value: "Un poco de náusea, nada más.", statedByPatient: true },
+      { field: "exertional", label: "Relación con esfuerzo", value: "Estaba subiendo escaleras.", statedByPatient: true },
+      { field: "cardiac_history", label: "Historia cardíaca", value: "No, primera vez.", statedByPatient: true },
+      { field: "current_medications", label: "Medicamentos", value: "Tomo lisinopril para la presión.", statedByPatient: true },
+      { field: "inferred_hypertension", label: "Hipertensión inferida", value: "Hipertensión (deducida del medicamento)", statedByPatient: false },
+      { field: "allergies", label: "Alergias", value: "Ninguna que yo sepa.", statedByPatient: true },
+      { field: "relevant_history", label: "Antecedentes", value: "Solo la presión alta.", statedByPatient: true }
     ]
   },
   {
@@ -147,18 +155,82 @@ const PAST_APPOINTMENTS = [
       { who: "agent", text: "Thank you. I now have what your medical team needs. All of this information will go to them and someone will come see you." }
     ],
     fields: [
-      { label: "Chief complaint", value: "Just a routine physical, no real complaints today.", statedByPatient: true },
-      { label: "Onset", value: "There's nothing specific going on, I just wanted a general check-up.", statedByPatient: true },
-      { label: "Duration", value: "N/A, I feel fine overall.", statedByPatient: true },
-      { label: "Severity (0-10)", value: "Zero, I feel fine.", statedByPatient: true },
-      { label: "Other symptoms", value: "No, nothing else.", statedByPatient: true },
-      { label: "Medications", value: "Just a daily multivitamin.", statedByPatient: true },
-      { label: "Allergies", value: "No known allergies.", statedByPatient: true },
-      { label: "Relevant history", value: "No, I'm generally healthy.", statedByPatient: true }
+      { field: "chief_complaint", label: "Chief complaint", value: "Just a routine physical, no real complaints today.", statedByPatient: true },
+      { field: "onset", label: "Onset", value: "There's nothing specific going on, I just wanted a general check-up.", statedByPatient: true },
+      { field: "duration", label: "Duration", value: "N/A, I feel fine overall.", statedByPatient: true },
+      { field: "severity_0_10", label: "Severity (0-10)", value: "Zero, I feel fine.", statedByPatient: true },
+      { field: "other_symptoms", label: "Other symptoms", value: "No, nothing else.", statedByPatient: true },
+      { field: "current_medications", label: "Medications", value: "Just a daily multivitamin.", statedByPatient: true },
+      { field: "allergies", label: "Allergies", value: "No known allergies.", statedByPatient: true },
+      { field: "relevant_history", label: "Relevant history", value: "No, I'm generally healthy.", statedByPatient: true }
+    ]
+  },
+  {
+    id: "past3",
+    doctor: "Dr Stephen King",
+    specialty: "Internal Medicine",
+    location: "Healthcare Clinic",
+    date: "July 23, 2026",
+    time: "10:00 AM",
+    reason: "Persistent cough and wheezing",
+    diagnosis: "Pending physician review",
+    notes: "Intake completed via voice. Awaiting physician review of the extracted summary before a diagnosis is finalized.",
+    prescriptions: [],
+    audit: {
+      sessionId: "VB-Q7L4WXPZ",
+      application: "Verbatim prototype v0.1 (browser speech engine)",
+      startedAt: "2026-07-23T16:10:00.000Z",
+      completedAt: "2026-07-23T16:14:32.000Z",
+      languageSpoken: "en-US",
+      captureMethod: "speech (Web Speech API)",
+      conditionCategory: "RESPIRATORY",
+      conditionCategoryLabel: "Respiratory",
+      triagePriority: "URGENT",
+      emergencyFlag: false,
+      signatureStatus: "UNSIGNED",
+      signatureNote: "Awaiting clinician review and 21 CFR Part 11 electronic signature.",
+      dataClassification: "SYNTHETIC / TEST DATA — no real PHI",
+      recordSha256: "c4a2e6f19b8d3c7a0e5f2b1d9c8a7e6f5d4c3b2a1e0f9d8c7b6a5f4e3d2c1b0a"
+    },
+    transcript: [
+      { who: "agent", text: "Hello, I'm the intake assistant. I'm going to ask you a few short questions so your medical team knows how to help you. Tell me, why did you come in today?" },
+      { who: "patient", text: "I've had a bad cough for about a week and I'm wheezing a lot." },
+      { who: "agent", text: "Thank you for telling me. Are you short of breath at rest, or only when moving?" },
+      { who: "patient", text: "Mostly when I walk up stairs or exert myself." },
+      { who: "agent", text: "Thanks. Do you have a cough? Are you bringing up phlegm?" },
+      { who: "patient", text: "Yes, some yellowish phlegm in the mornings." },
+      { who: "agent", text: "Understood. Have you had a fever?" },
+      { who: "patient", text: "A low-grade fever yesterday, around 100.4." },
+      { who: "agent", text: "Almost done. Do you have asthma, COPD, or another lung condition?" },
+      { who: "patient", text: "I had asthma as a kid but haven't used an inhaler in years." },
+      { who: "agent", text: "Great. Do you use oxygen or an inhaler at home?" },
+      { who: "patient", text: "No, not currently." },
+      { who: "agent", text: "Thanks. Are you currently taking any medications?" },
+      { who: "patient", text: "Just an allergy pill sometimes." },
+      { who: "agent", text: "Understood. Are you allergic to any medications?" },
+      { who: "patient", text: "No known drug allergies." },
+      { who: "agent", text: "Almost done. Do you have any important medical conditions?" },
+      { who: "patient", text: "Just the childhood asthma I mentioned." },
+      { who: "agent", text: "Thank you. I now have what your medical team needs. All of this information will go to them and someone will come see you." }
+    ],
+    fields: [
+      { field: "chief_complaint", label: "Chief complaint", value: "I've had a bad cough for about a week and I'm wheezing a lot.", statedByPatient: true },
+      { field: "dyspnea_at_rest", label: "Dyspnea at rest", value: "Mostly when I walk up stairs or exert myself.", statedByPatient: true },
+      { field: "cough", label: "Cough", value: "Yes, some yellowish phlegm in the mornings.", statedByPatient: true },
+      { field: "fever", label: "Fever", value: "A low-grade fever yesterday, around 100.4.", statedByPatient: true },
+      { field: "lung_history", label: "Lung history", value: "I had asthma as a kid but haven't used an inhaler in years.", statedByPatient: true },
+      { field: "home_inhaler", label: "Inhaler/oxygen", value: "No, not currently.", statedByPatient: true },
+      { field: "current_medications", label: "Medications", value: "Just an allergy pill sometimes.", statedByPatient: true },
+      { field: "allergies", label: "Allergies", value: "No known drug allergies.", statedByPatient: true },
+      { field: "relevant_history", label: "Relevant history", value: "Just the childhood asthma I mentioned.", statedByPatient: true }
     ]
   }
 ];
 
 function findPastAppointment(id) {
   return PAST_APPOINTMENTS.find(a => a.id === id) || null;
+}
+
+function findUpcomingAppointment(id) {
+  return UPCOMING_APPOINTMENTS.find(a => a.id === id) || null;
 }

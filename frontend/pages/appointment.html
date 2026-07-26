@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <header class="navbar">
+    <header class="navbar" data-role="patient">
         <a class="navbar-brand" href="appointment.html">
             <span class="navbar-mark">V</span> Verbatim
         </a>
@@ -52,16 +52,6 @@
             >
                 Past
             </button>
-
-            <button
-                class="tab-button"
-                type="button"
-                data-tab="profile"
-                role="tab"
-                aria-selected="false"
-            >
-                Profile
-            </button>
         </div>
 
         <section id="upcoming" class="tab-content active"></section>
@@ -71,6 +61,10 @@
 
     <script src="../js/theme.js"></script>
     <script src="../js/appointments-data.js"></script>
+    <script src="../js/summary-extractor.js"></script>
+    <script src="../js/reviews-store.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script src="../js/user-menu.js"></script>
     <script src="../js/appointment.js"></script>
 </body>
 </html>

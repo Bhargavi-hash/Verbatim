@@ -3,25 +3,24 @@ const $ = id => document.getElementById(id);
 const tabButtons = document.querySelectorAll(".tab-button");
 const tabContents = document.querySelectorAll(".tab-content");
 
-tabButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        const selectedTab = button.dataset.tab;
-
-        tabButtons.forEach((tabButton) => {
-            const isSelected = tabButton === button;
-
-            tabButton.classList.toggle("active", isSelected);
-            tabButton.setAttribute("aria-selected", String(isSelected));
-        });
-
-        tabContents.forEach((content) => {
-            content.classList.toggle(
-                "active",
-                content.id === selectedTab
-            );
-        });
+function showSection(id) {
+    tabContents.forEach((content) => {
+        content.classList.toggle("active", content.id === id);
     });
+    tabButtons.forEach((tabButton) => {
+        const isSelected = tabButton.dataset.tab === id;
+        tabButton.classList.toggle("active", isSelected);
+        tabButton.setAttribute("aria-selected", String(isSelected));
+    });
+}
+
+tabButtons.forEach((button) => {
+    button.addEventListener("click", () => showSection(button.dataset.tab));
 });
+
+// Profile no longer has its own tab button — it's reached from the navbar
+// user menu as appointment.html#profile — so honor the hash on load.
+if (location.hash === "#profile") showSection("profile");
 
 function renderUpcoming() {
     const container = $("upcoming");
@@ -39,7 +38,7 @@ function renderUpcoming() {
             <button class="btn btn-primary" type="button">Start Intake</button>
         `;
         article.querySelector("button").addEventListener("click", () => {
-            window.location.href = "verbatim_voice.html";
+            window.location.href = "verbatim_ui.html?appt=" + encodeURIComponent(appt.id);
         });
         container.appendChild(article);
     });

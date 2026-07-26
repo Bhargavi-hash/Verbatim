@@ -129,6 +129,16 @@ a {
   gap: 8px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 4px 6px;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.navbar-user:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .navbar-user .avatar {
@@ -272,7 +282,121 @@ body.dark .page-header h1 {
 .badge.URGENT   { background: var(--warn-bg);  color: var(--warn); }
 .badge.ROUTINE  { background: var(--ok-bg);    color: var(--ok); }
 
+/* ---- Notification bell ---- */
+.notif-wrap {
+  position: relative;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--alert);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  line-height: 1.4;
+}
+
+.notif-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  z-index: 200;
+}
+
+.notif-item {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.notif-item.unread {
+  background: var(--bg);
+}
+
+.notif-item + .notif-item {
+  margin-top: 4px;
+}
+
+.notif-item .ts {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.notif-item .followup {
+  margin-top: 6px;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.notif-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ---- User menu (Profile / Log out) ---- */
+.user-menu-wrap {
+  position: relative;
+}
+
+.user-menu-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 180px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: 200;
+}
+
+.user-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.user-menu-item:hover {
+  background: var(--bg);
+}
+
+.user-menu-item.danger {
+  color: var(--alert);
+}
+
 @media (max-width: 640px) {
+  .notif-panel {
+    width: 280px;
+  }
+
   .navbar {
     padding: 12px 16px;
   }
