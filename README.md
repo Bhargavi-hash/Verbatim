@@ -98,3 +98,5 @@ improperly licensed materials included. All work completed today; git history re
 - [ ] Best of ElevenLabs
 - [ ] Social Media track
 - [ ] [Render / Next.js / other — check the boxes that apply]
+
+![screenshot](https://raw.githubusercontent.com/Bhargavi-hash/Verbatim/main/band-agents.png)
