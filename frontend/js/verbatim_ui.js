@@ -660,7 +660,7 @@ async function reRecord(idx){
   setAv("listening");
   $("status").textContent="Regrabando su respuesta… hable ahora";
   $("listenRow").style.display="flex";
-  try{rec.start();}catch(e){}
+  startRecognition();
   resetSilence();
 }
 
@@ -1529,8 +1529,23 @@ if(SR){
       "audio-capture":"No se encontró micrófono.","network":"Este motor de voz requiere conexión a internet."};
     diag("Error de reconocimiento: "+e.error+"\n"+(m[e.error]||""));
   };
-  rec.onend=()=>{ if(listening){ setTimeout(()=>{ if(listening){ try{rec.start();}catch(e){} } },120); } };
+  rec.onend=()=>{ if(listening){ setTimeout(()=>{ if(listening)startRecognition(); },120); } };
 }else diag("Este navegador no soporta reconocimiento de voz. Use Chrome, o escriba las respuestas.");
+
+/* rec.start() throws InvalidStateError if recognition is still active or
+   hasn't finished releasing from a previous session — a real race with
+   continuous mode's auto-restart-on-end above. Silently swallowing that
+   error (as a bare try/catch does) leaves `listening` true with no actual
+   recognizer running, so speech is never captured again. Recover instead:
+   force a stop and retry once the engine has had a moment to settle. */
+function startRecognition(){
+  try{
+    rec.start();
+  }catch(e){
+    try{rec.stop();}catch(_){}
+    setTimeout(()=>{ if(listening){ try{rec.start();}catch(_){ listening=false; setAv(""); $("status").textContent="No se pudo activar el micrófono — intente de nuevo o escriba abajo"; } } },250);
+  }
+}
 $("doneSpeak").onclick=()=>finalizeSpeech("manual");
 $("resumeSummary").onclick=()=>{exitFixMode();readBack();};
 
@@ -1553,7 +1568,7 @@ $("speak").onclick=async()=>{
   setAv("listening");
   $("status").textContent="Escuchando… tómese su tiempo";
   $("listenRow").style.display="flex";
-  try{rec.start();}catch(e){}
+  startRecognition();
   resetSilence();};
 $("miccheck").onclick=async()=>{
   const L=["URL: "+location.protocol+"//"+location.host];
