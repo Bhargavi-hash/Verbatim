@@ -1,12 +1,9 @@
 const $ = id => document.getElementById(id);
 
-$("doctorInitials").textContent = DOCTOR_PROFILE.initials;
-$("doctorName").textContent = DOCTOR_PROFILE.name;
-
 const SECTIONS = [
     { key: "chief_complaint", title: "Chief Complaint", value: s => s.chiefComplaint },
     { key: "duration", title: "Duration", value: s => s.duration },
-    { key: "severity_0_10", title: "Severity", value: s => s.severity },
+    { key: "severity", title: "Severity", value: s => s.severity },
     { key: "symptoms", title: "Symptoms", value: s => s.symptoms, list: true },
     { key: "medical_history", title: "Medical History", value: s => s.medicalHistory, list: true },
     { key: "medication", title: "Medication", value: s => s.medication, list: true },
@@ -28,6 +25,15 @@ function renderNotFound() {
     `;
 }
 
+function sectionValueHtml(section, summary) {
+    const val = section.value(summary);
+    if (section.list) {
+        if (!val || !val.length) return `<div class="summary-value" style="color:var(--muted)">None reported</div>`;
+        return `<ul class="summary-value">${val.map(v => `<li>${v}</li>`).join("")}</ul>`;
+    }
+    return `<div class="summary-value">${val}</div>`;
+}
+
 function signatureHtml(signature) {
     if (!signature || signature.status === "UNSIGNED") {
         return `<div class="summary-value" style="color:var(--muted)">UNSIGNED — awaiting your decision below.</div>`;
@@ -45,13 +51,40 @@ function signatureHtml(signature) {
     `;
 }
 
-function sectionValueHtml(section, summary) {
-    const val = section.value(summary);
-    if (section.list) {
-        if (!val.length) return `<div class="summary-value" style="color:var(--muted)">None reported</div>`;
-        return `<ul class="summary-value">${val.map(v => `<li>${v}</li>`).join("")}</ul>`;
-    }
-    return `<div class="summary-value">${val}</div>`;
+function qaHtml(summary) {
+    const qa = summary.qaScore;
+    if (!qa) return "";
+    const judged = qa.judged || {};
+    const rows = [
+        ["Completeness", judged.completeness], ["Groundedness", judged.groundedness], ["Clarity", judged.clarity],
+    ].filter(([, v]) => v !== null && v !== undefined);
+    const disagreementNote = summary.redflagDisagreement
+        ? `<div class="followup-note" style="color:var(--warn)">⚠ The LLM's emergency assessment disagreed with the deterministic red-flag safety net — resolved conservatively (escalated). See audit log.</div>`
+        : "";
+    return `
+        <div class="detail-section">
+            <div class="info-label">Model</div><div>${summary.modelUsed}</div>
+        </div>
+        ${rows.length ? `
+        <div class="detail-section">
+            <div class="info-label">QA scores (0-10)</div>
+            <div>${rows.map(([k, v]) => `${k}: ${v}`).join(" · ")}</div>
+        </div>` : ""}
+        <div class="detail-section"><div class="info-label">QA verdict</div><div>${qa.verdict}${judged.notes ? " — " + judged.notes : ""}</div></div>
+        ${disagreementNote}
+    `;
+}
+
+function fallbackWarningHtml(s) {
+    const isFallback = (s.modelUsed || "").startsWith("deterministic-fallback");
+    if (!isFallback && !s.translationNote) return "";
+    return `
+        <div class="decision-banner" style="background:var(--warn-bg);color:var(--warn)">
+            ⚠ ${isFallback
+                ? "No LLM key is configured — this summary was extracted with a Spanish/English-only fallback. Text below may still be in the patient's original language, not translated to English."
+                : s.translationNote}
+        </div>
+    `;
 }
 
 function renderPage(review) {
@@ -61,27 +94,19 @@ function renderPage(review) {
 
     const decisionBanner = !isPending ? `
         <div class="decision-banner ${review.status}">
-            ${review.status === "approved" ? "✓ Approved" : "✗ Rejected"} on ${formatTs(review.decidedAt)}
-            ${review.status === "rejected" && review.followUpMessage ? `
-                <div class="followup-note">Follow-up sent to patient: "${review.followUpMessage}"</div>
-            ` : ""}
+            ${review.status === "approved" ? "✓ Approved" : "✗ Rejected"} on ${formatTs(review.signature.signedAt)}
+            ${review.status === "rejected" && review.followUpMessage ? `<div class="followup-note">Follow-up sent to patient: "${review.followUpMessage}"</div>` : ""}
         </div>
     ` : "";
 
     const sectionsHtml = SECTIONS.map(section => {
         const isFlagged = flagged.has(section.key);
         const checkboxHtml = isPending
-            ? `<label class="flag-toggle">
-                   <input type="checkbox" data-flag="${section.key}" ${isFlagged ? "checked" : ""}>
-                   Flag
-               </label>`
+            ? `<label class="flag-toggle"><input type="checkbox" data-flag="${section.key}" ${isFlagged ? "checked" : ""}> Flag</label>`
             : (isFlagged ? `<span class="flag-toggle">🚩 Flagged</span>` : "");
         return `
             <div class="summary-section ${isFlagged ? "flagged" : ""}">
-                <div class="summary-section-head">
-                    <h3>${section.title}</h3>
-                    ${checkboxHtml}
-                </div>
+                <div class="summary-section-head"><h3>${section.title}</h3>${checkboxHtml}</div>
                 ${sectionValueHtml(section, s)}
             </div>
         `;
@@ -107,7 +132,7 @@ function renderPage(review) {
             <div>
                 <h1>${review.patientName}</h1>
                 <div class="detail-sub">${review.doctor} · ${review.specialty} · ${review.location}</div>
-                <div class="detail-sub">${review.time} · ${review.date}</div>
+                <div class="detail-sub">${review.time} · ${review.date} · spoken in ${review.language}</div>
             </div>
             <span class="badge ${review.status === "approved" ? "ROUTINE" : review.status === "rejected" ? "EMERGENT" : "URGENT"}">
                 ${review.status.charAt(0).toUpperCase() + review.status.slice(1)}
@@ -115,6 +140,7 @@ function renderPage(review) {
         </div>
 
         ${decisionBanner}
+        ${fallbackWarningHtml(s)}
 
         <div class="section-grid">
             <div class="card">
@@ -124,18 +150,9 @@ function renderPage(review) {
 
             <div class="card">
                 <h2>Referral</h2>
-                <div class="detail-section">
-                    <div class="info-label">Specialist</div>
-                    <div>${s.referral.specialist}</div>
-                </div>
-                <div class="detail-section">
-                    <div class="info-label">Reason for referral</div>
-                    <ul class="rx-list">${s.referral.reasons.map(r => `<li>${r}</li>`).join("")}</ul>
-                </div>
-                <div class="detail-section">
-                    <div class="info-label">Status</div>
-                    <div>${s.referral.status}</div>
-                </div>
+                <div class="detail-section"><div class="info-label">Specialist</div><div>${s.referral.specialist}</div></div>
+                <div class="detail-section"><div class="info-label">Reason for referral</div><ul class="rx-list">${s.referral.reasons.map(r => `<li>${r}</li>`).join("")}</ul></div>
+                <div class="detail-section"><div class="info-label">Status</div><div>${s.referral.status}</div></div>
             </div>
 
             <div class="card">
@@ -144,16 +161,8 @@ function renderPage(review) {
             </div>
 
             <div class="card">
-                <h2>Audit Trail</h2>
-                <table class="kv-table">
-                    <tbody>
-                        <tr><td class="k">Transcript window</td><td class="v">${s.auditTrail.transcriptWindow}</td></tr>
-                        <tr><td class="k">User authentication</td><td class="v">${s.auditTrail.userAuth}</td></tr>
-                        <tr><td class="k">Record provenance</td><td class="v">${s.auditTrail.provenance}</td></tr>
-                        <tr><td class="k">Original language</td><td class="v">${s.auditTrail.originalLanguage}</td></tr>
-                        <tr><td class="k">Output language</td><td class="v">${s.auditTrail.outputLanguage}</td></tr>
-                    </tbody>
-                </table>
+                <h2>Pipeline / QA</h2>
+                ${qaHtml(s)}
             </div>
 
             <div class="card">
@@ -195,9 +204,7 @@ function wireDecisionPanel(review) {
         checkbox.addEventListener("change", () => {
             const key = checkbox.dataset.flag;
             if (checkbox.checked) flaggedKeys.add(key); else flaggedKeys.delete(key);
-
             checkbox.closest(".summary-section").classList.toggle("flagged", checkbox.checked);
-
             const draft = suggestFollowUp(flaggedKeys);
             if (followUpEl.value === "" || followUpEl.value === lastAutoDraft) {
                 followUpEl.value = draft;
@@ -206,28 +213,38 @@ function wireDecisionPanel(review) {
         });
     });
 
-    $("approveBtn").addEventListener("click", () => {
-        decideReview(review.id, "approved", { flags: [...flaggedKeys], followUpMessage: "" });
-        renderPage(getReview(review.id));
+    $("approveBtn").addEventListener("click", async () => {
+        await api.post(`/reviews/${review.id}/decide`, { status: "approved", flags: [...flaggedKeys], follow_up_message: "" });
+        renderPage(await api.get(`/reviews/${review.id}`));
     });
 
-    $("rejectBtn").addEventListener("click", () => {
+    $("rejectBtn").addEventListener("click", async () => {
         const message = followUpEl.value.trim();
         if (!message) {
             $("validationMsg").textContent = "Please write a follow-up message for the patient before rejecting.";
             $("validationMsg").style.display = "block";
             return;
         }
-        decideReview(review.id, "rejected", { flags: [...flaggedKeys], followUpMessage: message });
-        renderPage(getReview(review.id));
+        await api.post(`/reviews/${review.id}/decide`, { status: "rejected", flags: [...flaggedKeys], follow_up_message: message });
+        renderPage(await api.get(`/reviews/${review.id}`));
     });
 }
 
-const id = new URLSearchParams(location.search).get("id");
-const review = id ? getReview(id) : null;
-
-if (review) {
-    renderPage(review);
-} else {
-    renderNotFound();
+async function load(lang) {
+    const id = new URLSearchParams(location.search).get("id");
+    if (!id) { renderNotFound(); return; }
+    try {
+        const review = await api.get(`/reviews/${encodeURIComponent(id)}${lang ? "?lang=" + encodeURIComponent(lang) : ""}`);
+        renderPage(review);
+    } catch (e) {
+        renderNotFound();
+    }
 }
+
+async function init() {
+    await renderNavbarUser();
+    $("viewLangSelect").addEventListener("change", (e) => load(e.target.value));
+    await load("");
+}
+
+init();

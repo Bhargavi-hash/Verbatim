@@ -30,7 +30,8 @@ function initUserMenu() {
         if (!panel.hidden && !trigger.contains(e.target)) panel.hidden = true;
     });
 
-    panel.querySelector("#logoutBtn").addEventListener("click", () => {
+    panel.querySelector("#logoutBtn").addEventListener("click", async () => {
+        try { await api.post("/auth/logout"); } catch (e) { /* proceed regardless */ }
         window.location.href = "login.html";
     });
 }

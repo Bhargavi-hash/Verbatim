@@ -1,1 +1,5 @@
 .env
+verbatim.db
+backend/data/
+__pycache__/
+*.pyc

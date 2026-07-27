@@ -1,6 +1,6 @@
 /* Patient-facing notification bell. Mounts itself into the navbar on any
-   page that includes this script (after reviews-store.js). Reads from the
-   same localStorage-backed store the doctor pages write to. */
+   page that includes this script (after api.js). Reads from the real
+   backend, same one the doctor pages write to via /api/reviews/{id}/decide. */
 
 function timeAgo(iso) {
     const diffMs = Date.now() - new Date(iso).getTime();
@@ -13,8 +13,8 @@ function timeAgo(iso) {
     return `${days}d ago`;
 }
 
-function renderNotifPanel() {
-    const notifications = loadNotifications("patient");
+async function renderNotifPanel() {
+    const notifications = await api.get("/notifications");
     const panel = document.getElementById("notifPanel");
 
     if (notifications.length === 0) {
@@ -25,19 +25,14 @@ function renderNotifPanel() {
     panel.innerHTML = notifications.map((n) => `
         <div class="notif-item ${n.read ? "" : "unread"}">
             <div>${n.type === "approved" ? "✅" : "⚠️"} ${n.message}</div>
-            ${n.type === "rejected" ? (() => {
-                const review = getReview(n.reviewId);
-                return review && review.followUpMessage
-                    ? `<div class="followup">"${review.followUpMessage}"</div>`
-                    : "";
-            })() : ""}
             <div class="ts">${timeAgo(n.ts)}</div>
         </div>
     `).join("");
 }
 
-function updateNotifBadge() {
-    const count = unreadNotificationCount("patient");
+async function updateNotifBadge() {
+    const notifications = await api.get("/notifications");
+    const count = notifications.filter(n => !n.read).length;
     const badge = document.getElementById("notifCount");
     badge.hidden = count === 0;
     badge.textContent = String(count);
@@ -59,15 +54,15 @@ function initNotifications() {
 
     updateNotifBadge();
 
-    document.getElementById("notifBell").addEventListener("click", (e) => {
+    document.getElementById("notifBell").addEventListener("click", async (e) => {
         e.stopPropagation();
         const panel = document.getElementById("notifPanel");
         const opening = panel.hidden;
         panel.hidden = !panel.hidden;
         if (opening) {
-            renderNotifPanel();
-            markAllNotificationsRead("patient");
-            updateNotifBadge();
+            await renderNotifPanel();
+            await api.post("/notifications/mark-read");
+            await updateNotifBadge();
         }
     });
 

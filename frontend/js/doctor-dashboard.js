@@ -1,8 +1,5 @@
 const $ = id => document.getElementById(id);
 
-$("doctorInitials").textContent = DOCTOR_PROFILE.initials;
-$("doctorName").textContent = DOCTOR_PROFILE.name;
-
 const tabButtons = document.querySelectorAll(".tab-button");
 const tabContents = document.querySelectorAll(".tab-content");
 
@@ -25,8 +22,7 @@ function statusBadge(status) {
     return `<span class="badge ${badgeClass}">${label}</span>`;
 }
 
-function renderQueue() {
-    const reviews = loadReviews();
+function renderQueue(reviews) {
     const byStatus = { pending: [], approved: [], rejected: [] };
     reviews.forEach(r => byStatus[r.status]?.push(r));
 
@@ -61,4 +57,10 @@ function renderQueue() {
     });
 }
 
-renderQueue();
+async function init() {
+    await renderNavbarUser();
+    const reviews = await api.get("/reviews");
+    renderQueue(reviews);
+}
+
+init();

@@ -18,15 +18,14 @@ tabButtons.forEach((button) => {
     button.addEventListener("click", () => showSection(button.dataset.tab));
 });
 
-// Profile no longer has its own tab button — it's reached from the navbar
-// user menu as appointment.html#profile — so honor the hash on load.
-if (location.hash === "#profile") showSection("profile");
-
-function renderUpcoming() {
+function renderUpcoming(upcoming) {
     const container = $("upcoming");
     container.innerHTML = "";
-
-    UPCOMING_APPOINTMENTS.forEach((appt) => {
+    if (!upcoming.length) {
+        container.innerHTML = `<div class="card empty-state">No upcoming appointments.</div>`;
+        return;
+    }
+    upcoming.forEach((appt) => {
         const article = document.createElement("article");
         article.className = "appointment card";
         article.innerHTML = `
@@ -44,11 +43,14 @@ function renderUpcoming() {
     });
 }
 
-function renderPast() {
+function renderPast(past) {
     const container = $("past");
     container.innerHTML = "";
-
-    PAST_APPOINTMENTS.forEach((appt) => {
+    if (!past.length) {
+        container.innerHTML = `<div class="card empty-state">No past visits yet.</div>`;
+        return;
+    }
+    past.forEach((appt) => {
         const article = document.createElement("article");
         article.className = "appointment past-record card";
         article.innerHTML = `
@@ -66,46 +68,41 @@ function renderPast() {
     });
 }
 
-function renderProfile() {
+function renderProfile(me) {
+    const p = me.profile || {};
     $("profile").innerHTML = `
         <div class="card">
             <div class="profile-header">
-                <div class="profile-avatar">${PROFILE.initials}</div>
+                <div class="profile-avatar">${initials(p.name)}</div>
                 <div>
-                    <div class="profile-name">${PROFILE.name}</div>
-                    <div class="profile-sub">DOB ${PROFILE.dob} · Age ${PROFILE.age} · ${PROFILE.mrn}</div>
+                    <div class="profile-name">${p.name || me.email}</div>
+                    <div class="profile-sub">${p.dob ? "DOB " + p.dob : ""}${p.mrn ? " · " + p.mrn : ""}</div>
                 </div>
             </div>
             <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">Phone</div>
-                    <div class="info-value">${PROFILE.phone}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Email</div>
-                    <div class="info-value">${PROFILE.email}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Address</div>
-                    <div class="info-value">${PROFILE.address}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Insurance</div>
-                    <div class="info-value">${PROFILE.insurance}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Preferred language</div>
-                    <div class="info-value">${PROFILE.preferredLanguage}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Emergency contact</div>
-                    <div class="info-value">${PROFILE.emergencyContact}</div>
-                </div>
+                <div class="info-item"><div class="info-label">Email</div><div class="info-value">${me.email}</div></div>
+                <div class="info-item"><div class="info-label">Phone</div><div class="info-value">${p.phone || "—"}</div></div>
+                <div class="info-item"><div class="info-label">Address</div><div class="info-value">${p.address || "—"}</div></div>
+                <div class="info-item"><div class="info-label">Insurance</div><div class="info-value">${p.insurance || "—"}</div></div>
+                <div class="info-item"><div class="info-label">Preferred language</div><div class="info-value">${p.preferredLanguage || "—"}</div></div>
+                <div class="info-item"><div class="info-label">Emergency contact</div><div class="info-value">${p.emergencyContact || "—"}</div></div>
             </div>
         </div>
     `;
 }
 
-renderUpcoming();
-renderPast();
-renderProfile();
+window.addEventListener("hashchange", () => {
+    if (location.hash === "#profile") showSection("profile");
+});
+
+async function init() {
+    const me = await renderNavbarUser();
+    const [appointments] = await Promise.all([api.get("/appointments")]);
+    renderUpcoming(appointments.upcoming);
+    renderPast(appointments.past);
+    if (me) renderProfile(me);
+
+    if (location.hash === "#profile") showSection("profile");
+}
+
+init();

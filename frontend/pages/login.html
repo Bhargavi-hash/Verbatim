@@ -14,7 +14,7 @@
 
 <div class="card">
     <h1><img src="banner.png" width=250 height=100></img></h1>
-    <div class="subtitle">Please sign in</div>
+    <div class="subtitle" id="subtitle">Please sign in</div>
 
     <div class="role-toggle" role="tablist">
         <button type="button" class="role-button active" data-role="patient" role="tab" aria-selected="true">Patient</button>
@@ -22,28 +22,50 @@
     </div>
 
     <form id="loginForm">
-        <label>Login Name</label>
-        <input
-            type="text"
-            placeholder="Enter login name"
-            required>
+        <div id="registerFields" style="display:none">
+            <label>Full Name</label>
+            <input id="name" type="text" placeholder="Enter your full name">
+
+            <label>Preferred Language</label>
+            <select id="preferredLanguage">
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>Portuguese</option>
+                <option>German</option>
+                <option>Mandarin Chinese</option>
+                <option>Arabic</option>
+                <option>Hindi</option>
+                <option>Russian</option>
+                <option>Japanese</option>
+                <option>Korean</option>
+                <option>Italian</option>
+                <option>Vietnamese</option>
+                <option>Tagalog</option>
+                <option value="__other__">Other…</option>
+            </select>
+            <input id="preferredLanguageOther" type="text" placeholder="Enter your language" style="display:none;margin-top:8px">
+        </div>
+
+        <label>Email</label>
+        <input id="email" type="email" placeholder="Enter your email" required>
 
         <label>Password</label>
-        <input
-            type="password"
-            placeholder="Enter password"
-            required>
+        <input id="password" type="password" placeholder="Enter password" required>
 
-        <button class="login" type="submit">
-            Login
+        <div id="errorMsg" style="display:none;color:#dc2626;font-size:13px;margin-bottom:14px"></div>
+
+        <button class="login" type="submit" id="submitBtn">
+            Sign In
         </button>
     </form>
 
     <div class="footer">
-        Demo Login Page
+        <span id="modeToggle" style="cursor:pointer;color:var(--primary)">New here? Create an account</span>
     </div>
 </div>
 
+<script src="../js/api.js"></script>
 <script src="../js/login.js"></script>
 
 </body>

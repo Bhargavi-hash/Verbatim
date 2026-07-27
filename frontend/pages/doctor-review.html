@@ -19,6 +19,18 @@
             <a class="navbar-link active" href="doctor-dashboard.html">Review Queue</a>
         </nav>
         <div class="navbar-actions">
+            <select id="viewLangSelect" class="navbar-select" aria-label="View summary in language">
+                <option value="">View in: English</option>
+                <option value="Spanish">Español</option>
+                <option value="French">Français</option>
+                <option value="Portuguese">Português</option>
+                <option value="German">Deutsch</option>
+                <option value="Mandarin Chinese">中文</option>
+                <option value="Arabic">العربية</option>
+                <option value="Hindi">हिन्दी</option>
+                <option value="Russian">Русский</option>
+                <option value="Vietnamese">Tiếng Việt</option>
+            </select>
             <span class="navbar-user">
                 <span class="avatar" id="doctorInitials"></span>
                 <span id="doctorName"></span>
@@ -33,9 +45,8 @@
     </main>
 
     <script src="../js/theme.js"></script>
-    <script src="../js/appointments-data.js"></script>
-    <script src="../js/summary-extractor.js"></script>
-    <script src="../js/reviews-store.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/session.js"></script>
     <script src="../js/doctor-review.js"></script>
     <script src="../js/user-menu.js"></script>
 </body>

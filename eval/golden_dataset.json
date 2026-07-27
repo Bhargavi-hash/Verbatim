@@ -1,0 +1,92 @@
+{
+  "cases": [
+    {
+      "id": "es-cardiac-redflag",
+      "language": "Spanish",
+      "transcript": [
+        {"who": "agent", "text": "¿Por qué vino hoy?"},
+        {"who": "patient", "text": "Me duele mucho el pecho y el dolor se me va al brazo izquierdo."},
+        {"who": "agent", "text": "¿Desde cuándo?"},
+        {"who": "patient", "text": "Desde hace una hora."}
+      ],
+      "expected": {"condition_category": "CARDIAC", "triage_priority": "EMERGENT", "emergency_flag": true}
+    },
+    {
+      "id": "en-respiratory-routine",
+      "language": "English",
+      "transcript": [
+        {"who": "agent", "text": "What brings you in today?"},
+        {"who": "patient", "text": "I've had a mild cough for two days, nothing serious."},
+        {"who": "agent", "text": "Any fever or shortness of breath?"},
+        {"who": "patient", "text": "No fever, and I can breathe fine, just the cough."}
+      ],
+      "expected": {"condition_category": "RESPIRATORY", "triage_priority": "URGENT", "emergency_flag": false}
+    },
+    {
+      "id": "en-neuro-thunderclap",
+      "language": "English",
+      "transcript": [
+        {"who": "agent", "text": "What brings you in today?"},
+        {"who": "patient", "text": "I suddenly got the worst headache of my life about twenty minutes ago."},
+        {"who": "agent", "text": "Any other symptoms?"},
+        {"who": "patient", "text": "Just the headache, it came on very suddenly."}
+      ],
+      "expected": {"condition_category": "NEURO", "triage_priority": "EMERGENT", "emergency_flag": true}
+    },
+    {
+      "id": "es-general-routine",
+      "language": "Spanish",
+      "transcript": [
+        {"who": "agent", "text": "¿Por qué vino hoy?"},
+        {"who": "patient", "text": "Solo vengo para un chequeo general, no tengo ninguna molestia."},
+        {"who": "agent", "text": "¿Algo más?"},
+        {"who": "patient", "text": "No, nada más."}
+      ],
+      "expected": {"condition_category": "GENERAL", "triage_priority": "ROUTINE", "emergency_flag": false}
+    },
+    {
+      "id": "fr-cardiac-redflag",
+      "language": "French",
+      "transcript": [
+        {"who": "agent", "text": "Pourquoi êtes-vous venu aujourd'hui?"},
+        {"who": "patient", "text": "J'ai une douleur à la poitrine qui descend dans mon bras gauche depuis une heure."},
+        {"who": "agent", "text": "Autre chose?"},
+        {"who": "patient", "text": "J'ai aussi des sueurs froides et des nausées."}
+      ],
+      "expected": {"condition_category": "CARDIAC", "triage_priority": "EMERGENT", "emergency_flag": true}
+    },
+    {
+      "id": "en-msk-routine",
+      "language": "English",
+      "transcript": [
+        {"who": "agent", "text": "What brings you in today?"},
+        {"who": "patient", "text": "I twisted my ankle playing soccer yesterday, it's a bit swollen."},
+        {"who": "agent", "text": "Can you bear weight on it?"},
+        {"who": "patient", "text": "Yes, it just hurts a little when I walk."}
+      ],
+      "expected": {"condition_category": "MSK_INJURY", "triage_priority": "ROUTINE", "emergency_flag": false}
+    },
+    {
+      "id": "en-negation-not-emergency",
+      "language": "English",
+      "transcript": [
+        {"who": "agent", "text": "What brings you in today?"},
+        {"who": "patient", "text": "I've had mild chest tightness, but it does not radiate to my arm or jaw at all."},
+        {"who": "agent", "text": "Any other symptoms?"},
+        {"who": "patient", "text": "No, I feel otherwise fine, just wanted it checked."}
+      ],
+      "expected": {"condition_category": "CARDIAC", "triage_priority": "EMERGENT", "emergency_flag": false}
+    },
+    {
+      "id": "de-infection-routine",
+      "language": "German",
+      "transcript": [
+        {"who": "agent", "text": "Warum sind Sie heute hier?"},
+        {"who": "patient", "text": "Ich habe seit zwei Tagen leichtes Fieber und Schüttelfrost."},
+        {"who": "agent", "text": "Sonst noch etwas?"},
+        {"who": "patient", "text": "Nein, sonst fühle ich mich okay."}
+      ],
+      "expected": {"condition_category": "INFECTION", "triage_priority": "URGENT", "emergency_flag": false}
+    }
+  ]
+}

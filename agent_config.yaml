@@ -1,0 +1,25 @@
+agents:
+  intake-conductor:
+    uuid: ${BAND_CONDUCTOR_UUID}
+    api_key: ${BAND_CONDUCTOR_KEY}
+    role: conductor
+
+  follow-up-proposer:
+    uuid: ${BAND_PROPOSER_UUID}
+    api_key: ${BAND_PROPOSER_KEY}
+    role: proposer
+
+  coverage-tracker:
+    uuid: ${BAND_COVERAGE_UUID}
+    api_key: ${BAND_COVERAGE_KEY}
+    role: tracker
+
+  red-flag-monitor:
+    uuid: ${BAND_REDFLAG_UUID}
+    api_key: ${BAND_REDFLAG_KEY}
+    role: monitor
+
+  history-scribe:
+    uuid: ${BAND_SCRIBE_UUID}
+    api_key: ${BAND_SCRIBE_KEY}
+    role: scribe
