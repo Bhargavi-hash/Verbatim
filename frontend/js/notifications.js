@@ -24,7 +24,7 @@ async function renderNotifPanel() {
 
     panel.innerHTML = notifications.map((n) => `
         <div class="notif-item ${n.read ? "" : "unread"}">
-            <div>${n.type === "approved" ? "✅" : "⚠️"} ${n.message}</div>
+            <div><span class="icon-inline ${n.type === "approved" ? "icon-ok" : "icon-warn"}">${n.type === "approved" ? Icons.checkmarkCircle() : Icons.exclamationTriangle()}</span>${n.message}</div>
             <div class="ts">${timeAgo(n.ts)}</div>
         </div>
     `).join("");
@@ -46,7 +46,7 @@ function initNotifications() {
     wrap.className = "notif-wrap";
     wrap.innerHTML = `
         <button id="notifBell" class="theme-btn" type="button" aria-label="Notifications">
-            🔔<span id="notifCount" class="notif-badge" hidden>0</span>
+            ${Icons.bell()}<span id="notifCount" class="notif-badge" hidden>0</span>
         </button>
         <div id="notifPanel" class="notif-panel" hidden></div>
     `;

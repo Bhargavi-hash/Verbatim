@@ -46,15 +46,23 @@ body{
 }
 
 .toggle button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
     border:none;
     background:var(--card);
     color:var(--text);
     border:1px solid var(--border);
-    padding:10px 14px;
+    padding:10px 12px;
     border-radius:999px;
     cursor:pointer;
     font-size:18px;
     box-shadow:var(--shadow);
+    transition:transform .12s;
+}
+
+.toggle button:active{
+    transform:scale(.92);
 }
 
 .card{

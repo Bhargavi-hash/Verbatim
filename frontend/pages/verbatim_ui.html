@@ -14,7 +14,7 @@
     <span class="navbar-mark">V</span> Verbatim
   </a>
   <nav class="navbar-links">
-    <a class="navbar-link" href="appointment.html">← Appointments</a>
+    <a class="navbar-link" href="appointment.html"><span id="backIcon" class="icon-inline"></span>Appointments</a>
   </nav>
   <div class="navbar-actions">
     <select id="langSelect" class="navbar-select" aria-label="Conversation language">
@@ -37,7 +37,7 @@
       <span class="avatar">MG</span>
       <span>Patient</span>
     </span>
-    <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
+    <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode"></button>
   </div>
 </header>
 
@@ -70,11 +70,11 @@
 
     <div class="btns">
       <button id="start">Start</button>
-      <button id="speak" class="ghost" disabled>🎤 Speak</button>
-      <button id="reset" class="ghost" style="flex:0 0 auto;min-width:auto;padding:13px 16px">↻</button>
+      <button id="speak" class="ghost" disabled><span id="speakIcon" class="icon-inline"></span>Speak</button>
+      <button id="reset" class="ghost" style="flex:0 0 auto;min-width:auto;padding:13px 16px"><span id="resetIcon" class="icon-inline" style="margin-right:0"></span></button>
     </div>
     <div class="btns" id="listenRow" style="display:none;margin-top:8px">
-      <button id="doneSpeak">✓ Done — I've finished speaking</button>
+      <button id="doneSpeak"><span id="doneSpeakIcon" class="icon-inline"></span>Done — I've finished speaking</button>
     </div>
     <div id="interim" class="interim-box" style="display:none"></div>
     <div style="margin-top:10px"><input id="typed" placeholder="…or type your answer and press Enter" disabled/></div>
@@ -83,7 +83,7 @@
     <details>
       <summary>Voice &amp; microphone settings</summary>
       <div class="field">
-        <button id="miccheck" class="ghost" style="width:100%">🔧 Test microphone</button>
+        <button id="miccheck" class="ghost" style="width:100%"><span id="miccheckIcon" class="icon-inline"></span>Test microphone</button>
       </div>
       <div class="field">
         <label>Silence timeout before finishing · <span id="pauseVal">5</span>s</label>
@@ -116,6 +116,14 @@
   </div>
 </div>
 
+<script src="../js/icons.js"></script>
+<script>
+  document.getElementById("backIcon").innerHTML = Icons.chevronLeft(14);
+  document.getElementById("speakIcon").innerHTML = Icons.mic(16);
+  document.getElementById("resetIcon").innerHTML = Icons.arrowClockwise(18);
+  document.getElementById("doneSpeakIcon").innerHTML = Icons.checkmarkCircle(16);
+  document.getElementById("miccheckIcon").innerHTML = Icons.wrench(16);
+</script>
 <script src="../js/theme.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/session.js"></script>

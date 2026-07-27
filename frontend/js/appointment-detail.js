@@ -45,16 +45,16 @@ function renderDetail(appt) {
 
     const reviewBanner = review && review.status !== "pending" ? `
         <div class="decision-banner ${review.status}">
-            ${review.status === "approved" ? "✓ Physician approved this visit summary" : "✗ Physician requested follow-up on this visit summary"}
+            <span class="icon-inline">${review.status === "approved" ? Icons.checkmarkCircle() : Icons.xmarkCircle()}</span>${review.status === "approved" ? "Physician approved this visit summary" : "Physician requested follow-up on this visit summary"}
             ${review.status === "rejected" && review.followUpMessage ? `<div class="followup-note">"${review.followUpMessage}"</div>` : ""}
         </div>
     ` : (review && review.status === "pending" ? `
-        <div class="decision-banner" style="background:var(--warn-bg);color:var(--warn)">⏳ Awaiting physician review</div>
+        <div class="decision-banner" style="background:var(--warn-bg);color:var(--warn)"><span class="icon-inline">${Icons.clock()}</span>Awaiting physician review</div>
     ` : "");
 
     const fallbackWarning = s && ((s.modelUsed || "").startsWith("deterministic-fallback") || s.translationNote) ? `
         <div class="decision-banner" style="background:var(--warn-bg);color:var(--warn)">
-            ⚠ ${(s.modelUsed || "").startsWith("deterministic-fallback")
+            <span class="icon-inline">${Icons.exclamationTriangle()}</span>${(s.modelUsed || "").startsWith("deterministic-fallback")
                 ? "No LLM key is configured yet — some fields below may still be in the original spoken language rather than translated."
                 : s.translationNote}
         </div>

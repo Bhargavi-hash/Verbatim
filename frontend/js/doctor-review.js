@@ -59,7 +59,7 @@ function qaHtml(summary) {
         ["Completeness", judged.completeness], ["Groundedness", judged.groundedness], ["Clarity", judged.clarity],
     ].filter(([, v]) => v !== null && v !== undefined);
     const disagreementNote = summary.redflagDisagreement
-        ? `<div class="followup-note" style="color:var(--warn)">⚠ The LLM's emergency assessment disagreed with the deterministic red-flag safety net — resolved conservatively (escalated). See audit log.</div>`
+        ? `<div class="followup-note icon-warn"><span class="icon-inline">${Icons.exclamationTriangle()}</span>The LLM's emergency assessment disagreed with the deterministic red-flag safety net — resolved conservatively (escalated). See audit log.</div>`
         : "";
     return `
         <div class="detail-section">
@@ -80,7 +80,7 @@ function fallbackWarningHtml(s) {
     if (!isFallback && !s.translationNote) return "";
     return `
         <div class="decision-banner" style="background:var(--warn-bg);color:var(--warn)">
-            ⚠ ${isFallback
+            <span class="icon-inline">${Icons.exclamationTriangle()}</span>${isFallback
                 ? "No LLM key is configured — this summary was extracted with a Spanish/English-only fallback. Text below may still be in the patient's original language, not translated to English."
                 : s.translationNote}
         </div>
@@ -94,7 +94,7 @@ function renderPage(review) {
 
     const decisionBanner = !isPending ? `
         <div class="decision-banner ${review.status}">
-            ${review.status === "approved" ? "✓ Approved" : "✗ Rejected"} on ${formatTs(review.signature.signedAt)}
+            <span class="icon-inline">${review.status === "approved" ? Icons.checkmarkCircle() : Icons.xmarkCircle()}</span>${review.status === "approved" ? "Approved" : "Rejected"} on ${formatTs(review.signature.signedAt)}
             ${review.status === "rejected" && review.followUpMessage ? `<div class="followup-note">Follow-up sent to patient: "${review.followUpMessage}"</div>` : ""}
         </div>
     ` : "";
@@ -103,7 +103,7 @@ function renderPage(review) {
         const isFlagged = flagged.has(section.key);
         const checkboxHtml = isPending
             ? `<label class="flag-toggle"><input type="checkbox" data-flag="${section.key}" ${isFlagged ? "checked" : ""}> Flag</label>`
-            : (isFlagged ? `<span class="flag-toggle">🚩 Flagged</span>` : "");
+            : (isFlagged ? `<span class="flag-toggle"><span class="icon-inline">${Icons.flag()}</span>Flagged</span>` : "");
         return `
             <div class="summary-section ${isFlagged ? "flagged" : ""}">
                 <div class="summary-section-head"><h3>${section.title}</h3>${checkboxHtml}</div>

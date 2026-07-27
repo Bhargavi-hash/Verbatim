@@ -1,15 +1,14 @@
 const body = document.body;
 const btn = document.getElementById("themeBtn");
 
-if (localStorage.getItem("theme") === "dark") {
-    body.classList.add("dark");
-    btn.textContent = "☀️";
-}
+const isDarkInit = localStorage.getItem("theme") === "dark";
+if (isDarkInit) body.classList.add("dark");
+btn.innerHTML = isDarkInit ? Icons.sun() : Icons.moon();
 
 btn.onclick = () => {
     body.classList.toggle("dark");
     const dark = body.classList.contains("dark");
-    btn.textContent = dark ? "☀️" : "🌙";
+    btn.innerHTML = dark ? Icons.sun() : Icons.moon();
     localStorage.setItem("theme", dark ? "dark" : "light");
 };
 

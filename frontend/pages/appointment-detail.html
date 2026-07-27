@@ -35,15 +35,17 @@
                 <span class="avatar">MG</span>
                 <span>Maria Gonzalez</span>
             </span>
-            <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode">🌙</button>
+            <button id="themeButton" class="theme-btn" type="button" aria-label="Toggle dark mode"></button>
         </div>
     </header>
 
     <main class="page-content">
-        <a class="back-link" href="appointment.html">← Back to appointments</a>
+        <a class="back-link" href="appointment.html"><span id="backIcon" class="icon-inline"></span>Back to appointments</a>
         <div id="body"></div>
     </main>
 
+    <script src="../js/icons.js"></script>
+    <script>document.getElementById("backIcon").innerHTML = Icons.chevronLeft(14);</script>
     <script src="../js/theme.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/session.js"></script>

@@ -212,10 +212,13 @@ body.dark .navbar {
 }
 
 .theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--text);
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: 999px;
   cursor: pointer;
   font-size: 15px;
@@ -335,6 +338,19 @@ body.dark .navbar {
   font-weight: 700;
   letter-spacing: 0.5px;
 }
+
+/* ---- SF Symbols-style inline icons (see js/icons.js) ---- */
+.icon-inline {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: -3px;
+  margin-right: 5px;
+}
+
+.icon-ok { color: var(--ok); }
+.icon-warn { color: var(--warn); }
+.icon-alert { color: var(--alert); }
+.icon-muted { color: var(--muted); }
 
 .badge.EMERGENT { background: var(--alert-bg); color: var(--alert); }
 .badge.URGENT   { background: var(--warn-bg);  color: var(--warn); }
