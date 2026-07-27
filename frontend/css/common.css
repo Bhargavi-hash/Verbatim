@@ -1,39 +1,69 @@
 /* ============================================================
-   Verbatim — shared design system (palette, reset, navbar, cards, buttons)
+   Verbatim — shared design system, built on Apple's Human Interface
+   Guidelines: system color roles (label/secondaryLabel/separator/systemBlue…),
+   translucent "materials" for chrome, SF-first type stack, continuous
+   corner radii, and flat/hairline surfaces instead of drop-shadow-heavy cards.
    Included by every authenticated page, before the page's own stylesheet.
    ============================================================ */
 
 :root {
-  --navy: #0f2942;
-  --navy-soft: #16385a;
-  --teal: #1a7a8c;
-  --teal-hover: #156476;
-  --bg: #f4f7f9;
+  /* Accent (systemBlue) — kept as --teal/--teal-hover for drop-in compat
+     with every page stylesheet that already references them. */
+  --teal: #007aff;
+  --teal-hover: #0060df;
+  --teal-tint: rgba(0, 122, 255, 0.12);
+
+  /* Label colors */
+  --navy: #1d1d1f;       /* primary label / headings (Apple's near-black) */
+  --navy-soft: #3a3a3c;
+  --text: #1d1d1f;        /* body label */
+  --muted: rgba(60, 60, 67, 0.6);   /* secondaryLabel */
+
+  /* Backgrounds (systemGroupedBackground / secondarySystemGroupedBackground) */
+  --bg: #f2f2f7;
   --card: #ffffff;
-  --line: #dfe6ec;
-  --muted: #6b7c8c;
-  --text: #1f2937;
-  --alert: #c0392b;
-  --alert-bg: #fdecea;
-  --warn: #d68910;
-  --warn-bg: #fdf3e2;
-  --ok: #1e8449;
-  --ok-bg: #eaf6ee;
-  --shadow: 0 10px 30px rgba(15, 41, 66, 0.08);
-  --shadow-lg: 0 20px 50px rgba(15, 41, 66, 0.14);
+  --line: rgba(60, 60, 67, 0.29);   /* separator */
+
+  /* Semantic system colors */
+  --alert: #ff3b30;
+  --alert-bg: rgba(255, 59, 48, 0.12);
+  --warn: #ff9500;
+  --warn-bg: rgba(255, 149, 0, 0.12);
+  --ok: #34c759;
+  --ok-bg: rgba(52, 199, 89, 0.12);
+
+  /* Apple surfaces are close to flat — shadows are a soft, low-opacity hint,
+     not a floating-card effect. */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  --r: 16px;     /* card / sheet corner radius */
+  --r-sm: 10px;  /* control corner radius */
 }
 
 body.dark {
-  --bg: #0b1622;
-  --card: #152233;
-  --line: #263a4d;
-  --muted: #8ba0b3;
-  --text: #e7edf3;
-  --alert-bg: rgba(192, 57, 43, 0.16);
-  --warn-bg: rgba(214, 137, 16, 0.16);
-  --ok-bg: rgba(30, 132, 73, 0.16);
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.55);
+  --teal: #0a84ff;
+  --teal-hover: #409cff;
+  --teal-tint: rgba(10, 132, 255, 0.18);
+
+  --navy: #f5f5f7;
+  --navy-soft: #d1d1d6;
+  --text: #f5f5f7;
+  --muted: rgba(235, 235, 245, 0.6);
+
+  --bg: #000000;
+  --card: #1c1c1e;
+  --line: rgba(84, 84, 88, 0.65);
+
+  --alert: #ff453a;
+  --alert-bg: rgba(255, 69, 58, 0.18);
+  --warn: #ff9f0a;
+  --warn-bg: rgba(255, 159, 10, 0.18);
+  --ok: #30d158;
+  --ok-bg: rgba(48, 209, 88, 0.18);
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -46,9 +76,11 @@ html, body {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
   transition: background 0.2s, color 0.2s;
 }
 
@@ -56,16 +88,27 @@ a {
   color: inherit;
 }
 
-/* ---- Navbar ---- */
+/* ---- Navbar: a translucent, blurred "material" toolbar, like macOS/iOS
+   chrome — not a solid brand-colored bar. ---- */
 .navbar {
-  background: var(--navy);
-  color: #fff;
+  background: rgba(242, 242, 247, 0.78);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 28px;
+  padding: 12px 28px;
   flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+body.dark .navbar {
+  background: rgba(28, 28, 30, 0.72);
 }
 
 .navbar-brand {
@@ -73,22 +116,23 @@ a {
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #fff;
+  color: var(--text);
   font-weight: 700;
   font-size: 17px;
-  letter-spacing: 0.3px;
+  letter-spacing: -0.01em;
 }
 
 .navbar-mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   background: var(--teal);
-  font-size: 13px;
-  font-weight: 800;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .navbar-links {
@@ -98,29 +142,29 @@ a {
 }
 
 .navbar-link {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--muted);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
   transition: 0.15s;
 }
 
 .navbar-link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: rgba(120, 120, 128, 0.12);
+  color: var(--text);
 }
 
 .navbar-link.active {
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
+  background: var(--teal-tint);
+  color: var(--teal);
 }
 
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .navbar-user {
@@ -128,24 +172,25 @@ a {
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text);
   cursor: pointer;
   border: none;
   background: transparent;
-  padding: 4px 6px;
-  border-radius: 8px;
+  padding: 4px 8px 4px 4px;
+  border-radius: 999px;
   font-family: inherit;
 }
 
 .navbar-user:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(120, 120, 128, 0.12);
 }
 
 .navbar-user .avatar {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--teal);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,30 +200,35 @@ a {
 
 .navbar-select {
   padding: 7px 10px;
-  border-radius: 7px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
   font-size: 13px;
 }
 
 .navbar-select option {
-  color: #0f2942;
+  color: #000;
 }
 
 .theme-btn {
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
   padding: 8px 12px;
   border-radius: 999px;
   cursor: pointer;
   font-size: 15px;
   line-height: 1;
+  transition: transform 0.12s, background 0.15s;
 }
 
 .theme-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(120, 120, 128, 0.12);
+}
+
+.theme-btn:active {
+  transform: scale(0.92);
 }
 
 /* ---- Page layout ---- */
@@ -194,12 +244,10 @@ a {
 
 .page-header h1 {
   margin: 0 0 6px;
-  font-size: 1.7rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--navy);
-}
-
-body.dark .page-header h1 {
-  color: var(--text);
 }
 
 .page-header p {
@@ -212,7 +260,7 @@ body.dark .page-header h1 {
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--r);
   box-shadow: var(--shadow);
   padding: 20px;
 }
@@ -223,15 +271,17 @@ body.dark .page-header h1 {
   justify-content: center;
   gap: 6px;
   border: none;
-  border-radius: 9px;
+  border-radius: var(--r-sm);
   padding: 11px 18px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  transition: background 0.15s, color 0.15s, opacity 0.15s, transform 0.1s;
   text-decoration: none;
 }
 
+/* Apple's "filled" button — flat accent fill, no lift-on-hover; controls
+   darken/lighten slightly and shrink a touch on press instead. */
 .btn-primary {
   background: var(--teal);
   color: #fff;
@@ -239,32 +289,40 @@ body.dark .page-header h1 {
 
 .btn-primary:hover {
   background: var(--teal-hover);
-  transform: translateY(-1px);
 }
 
+/* Apple's "tinted" button — accent-colored text on a soft accent-tinted
+   fill, no border. This is the standard secondary action style in HIG,
+   not an outlined button. */
 .btn-outline {
-  background: transparent;
-  border: 1px solid var(--teal);
+  background: var(--teal-tint);
+  border: none;
   color: var(--teal);
 }
 
 .btn-outline:hover {
-  background: var(--teal);
-  color: #fff;
+  background: var(--teal-tint);
+  opacity: 0.8;
 }
 
+/* Apple's "gray" button — neutral tinted fill for low-emphasis actions. */
 .btn-ghost {
-  background: var(--bg);
+  background: rgba(120, 120, 128, 0.12);
   color: var(--text);
-  border: 1px solid var(--line);
+  border: none;
 }
 
 .btn-ghost:hover {
-  background: var(--line);
+  background: rgba(120, 120, 128, 0.2);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+  opacity: 0.9;
 }
 
 .btn:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none !important;
 }
@@ -308,9 +366,11 @@ body.dark .page-header h1 {
   max-height: 400px;
   overflow-y: auto;
   background: var(--card);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
   color: var(--text);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: var(--shadow-lg);
   padding: 8px;
   z-index: 200;
@@ -361,9 +421,11 @@ body.dark .page-header h1 {
   right: 0;
   width: 180px;
   background: var(--card);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
   color: var(--text);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: var(--shadow-lg);
   padding: 6px;
   z-index: 200;

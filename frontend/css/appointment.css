@@ -1,32 +1,36 @@
+/* iOS-style segmented control: a neutral gray track with a raised,
+   card-colored "thumb" behind the selected segment — not a solid
+   accent-filled tab. */
 .tabs {
   display: flex;
   flex-wrap: nowrap;
-  gap: 6px;
+  gap: 2px;
   margin-bottom: 24px;
-  padding: 5px;
-  border-radius: 12px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(120, 120, 128, 0.12);
+  border: none;
   max-width: 420px;
 }
 
 .tab-button {
   flex: 1;
-  padding: 11px;
+  padding: 8px 11px;
   border: none;
-  border-radius: 9px;
+  border-radius: 7px;
   background: transparent;
   color: var(--muted);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background 0.2s, color 0.2s;
   white-space: nowrap;
 }
 
 .tab-button.active {
-  background: var(--teal);
-  color: #fff;
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .tab-content {

@@ -4,9 +4,6 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Verbatim — Intake</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/common.css">
 <link rel="stylesheet" href="../css/verbatim_ui.css">
 </head>
@@ -53,7 +50,7 @@
       <div id="avF" class="avatar show">
         <img src="avatar_female.png" alt="Intake assistant"/>
         <svg class="ovl" viewBox="0 0 440 440">
-          <circle class="ringc" cx="220" cy="220" r="205" fill="none" stroke="#4f46e5" stroke-width="4"/>
+          <circle class="ringc" cx="220" cy="220" r="205" fill="none" stroke="#007aff" stroke-width="4"/>
           <g class="mouth-g" style="transform-origin:219px 218px">
             <ellipse cx="219" cy="219" rx="17" ry="11" fill="#8d3b40" stroke="#6b262b" stroke-width="2"/>
             <path d="M204 215q15 6 30 0z" fill="#fff"/>
@@ -79,8 +76,7 @@
     <div class="btns" id="listenRow" style="display:none;margin-top:8px">
       <button id="doneSpeak">✓ Done — I've finished speaking</button>
     </div>
-    <div id="interim" style="display:none;margin-top:10px;padding:12px 14px;border-radius:12px;
-      background:#f0fdf7;border:1px dashed #86e0b6;font-size:14.5px;color:#065f46;line-height:1.55"></div>
+    <div id="interim" class="interim-box" style="display:none"></div>
     <div style="margin-top:10px"><input id="typed" placeholder="…or type your answer and press Enter" disabled/></div>
     <p class="hint">Tip: if the microphone doesn't work, you can type. The flow is identical.</p>
 
